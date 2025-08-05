@@ -5892,7 +5892,13 @@ SUPPORTED_ATOMIC_TYPES = (
 
 def atomic_op_constraint(arg_types: Mapping[str, Any]):
     idx_types = tuple(arg_types[x] for x in "ijkl" if arg_types.get(x, None) is not None)
-    return all(types_equal(idx_types[0], t) for t in idx_types[1:]) and arg_types["arr"].ndim == len(idx_types)
+    if "arr" in arg_types:
+        ndim = arg_types["arr"].ndim
+    elif "t" in arg_types:
+        ndim = len(arg_types["t"].shape)
+    else:
+        return False
+    return all(types_equal(idx_types[0], t) for t in idx_types[1:]) and ndim == len(idx_types)
 
 
 def create_atomic_op_value_func(op: str):
@@ -5900,23 +5906,30 @@ def create_atomic_op_value_func(op: str):
         if arg_types is None:
             return Any
 
-        arr_type = arg_types["arr"]
+        if "arr" in arg_types:
+            arr_type = arg_types["arr"]
+            ndim = arr_type.ndim
+            if not is_array(arr_type):
+                raise RuntimeError(f"atomic_{op}() first argument must be an array")
+        elif "t" in arg_types:
+            arr_type = arg_types["t"]
+            ndim = len(arr_type.shape)
+            if not is_tile(arr_type):
+                raise RuntimeError(f"atomic_{op}() first argument must be a tile")
+
         value_type = arg_types["value"]
         idx_types = tuple(arg_types[x] for x in "ijkl" if arg_types.get(x, None) is not None)
 
-        if not is_array(arr_type):
-            raise RuntimeError(f"atomic_{op}() first argument must be an array")
-
         idx_count = len(idx_types)
 
-        if idx_count < arr_type.ndim:
+        if idx_count < ndim:
             raise RuntimeError(
                 f"Num indices < num dimensions for atomic_{op}(), this is a codegen error, should have generated a view instead"
             )
 
-        if idx_count > arr_type.ndim:
+        if idx_count > ndim:
             raise RuntimeError(
-                f"Num indices > num dimensions for atomic_{op}(), received {idx_count}, but array only has {arr_type.ndim}"
+                f"Num indices > num dimensions for atomic_{op}(), received {idx_count}, but array only has {ndim}"
             )
 
         # check index types
@@ -5970,7 +5983,10 @@ def create_atomic_op_value_func(op: str):
 def atomic_op_dispatch_func(input_types: Mapping[str, type], return_type: Any, args: Mapping[str, Var]):
     # as this is a codegen callback, we can mark the fact that this func writes to an array here
     if warp.config.verify_autograd_array_access:
-        arr = args["arr"]
+        if "arr" in args:
+            arr = args["arr"]
+        elif "t" in args:
+            arr = args["t"]
         arr.mark_write()
 
     func_args = tuple(args.values())
@@ -6448,6 +6464,20 @@ for array_type in array_types:
         group="Utility",
         skip_replay=True,
     )
+
+add_builtin(
+    "atomic_and",
+    hidden=hidden,
+    input_types={"t": tile(dtype=Any, shape=Tuple[int, ...]), "i": Int, "value": Any},
+    constraint=atomic_op_constraint,
+    value_func=create_atomic_op_value_func("and"),
+    dispatch_func=atomic_op_dispatch_func,
+    doc="""Atomically performs a bitwise AND between ``value`` and ``t[i]``, atomically update the array, and return the old value.
+    This function is automatically invoked when using the syntax ``t[i] &= value``.""",
+    group="Utility",
+    skip_replay=True,
+    export=False,
+)
 
 
 # used to index into builtin types, i.e.: y = vec3[1]
