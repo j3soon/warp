@@ -3277,6 +3277,105 @@ add_builtin(
     export=False,
 )
 
+add_builtin(
+    "tile_and_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "i": int, "value": Any},
+    value_func=tile_inplace_value_func,
+    group="Tile Primitives",
+    hidden=True,
+    export=False,
+)
+add_builtin(
+    "tile_and_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "i": int, "j": int, "value": Any},
+    value_func=tile_inplace_value_func,
+    group="Tile Primitives",
+    hidden=True,
+    export=False,
+)
+add_builtin(
+    "tile_and_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "i": int, "j": int, "k": int, "value": Any},
+    value_func=tile_inplace_value_func,
+    group="Tile Primitives",
+    hidden=True,
+    export=False,
+)
+add_builtin(
+    "tile_and_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "i": int, "j": int, "k": int, "l": int, "value": Any},
+    value_func=tile_inplace_value_func,
+    group="Tile Primitives",
+    hidden=True,
+    export=False,
+)
+
+add_builtin(
+    "tile_or_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "i": int, "value": Any},
+    value_func=tile_inplace_value_func,
+    group="Tile Primitives",
+    hidden=True,
+    export=False,
+)
+add_builtin(
+    "tile_or_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "i": int, "j": int, "value": Any},
+    value_func=tile_inplace_value_func,
+    group="Tile Primitives",
+    hidden=True,
+    export=False,
+)
+add_builtin(
+    "tile_or_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "i": int, "j": int, "k": int, "value": Any},
+    value_func=tile_inplace_value_func,
+    group="Tile Primitives",
+    hidden=True,
+    export=False,
+)
+add_builtin(
+    "tile_or_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "i": int, "j": int, "k": int, "l": int, "value": Any},
+    value_func=tile_inplace_value_func,
+    group="Tile Primitives",
+    hidden=True,
+    export=False,
+)
+
+add_builtin(
+    "tile_xor_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "i": int, "value": Any},
+    value_func=tile_inplace_value_func,
+    group="Tile Primitives",
+    hidden=True,
+    export=False,
+)
+add_builtin(
+    "tile_xor_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "i": int, "j": int, "value": Any},
+    value_func=tile_inplace_value_func,
+    group="Tile Primitives",
+    hidden=True,
+    export=False,
+)
+add_builtin(
+    "tile_xor_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "i": int, "j": int, "k": int, "value": Any},
+    value_func=tile_inplace_value_func,
+    group="Tile Primitives",
+    hidden=True,
+    export=False,
+)
+add_builtin(
+    "tile_xor_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "i": int, "j": int, "k": int, "l": int, "value": Any},
+    value_func=tile_inplace_value_func,
+    group="Tile Primitives",
+    hidden=True,
+    export=False,
+)
+
 
 def tile_transpose_value_func(arg_types, arg_values):
     # return generic type (for doc builds)
@@ -6830,6 +6929,138 @@ add_builtin(
 )
 
 
+# implements vector[idx] &= scalar
+add_builtin(
+    "and_inplace",
+    input_types={"a": vector(length=Any, dtype=Scalar), "i": Any, "value": Any},
+    value_type=None,
+    dispatch_func=vector_assign_dispatch_func,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+# implements quaternion[idx] &= scalar
+add_builtin(
+    "and_inplace",
+    input_types={"a": quaternion(dtype=Scalar), "i": Any, "value": Any},
+    value_type=None,
+    dispatch_func=vector_assign_dispatch_func,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+# implements transformation[idx] &= scalar
+add_builtin(
+    "and_inplace",
+    input_types={"a": transformation(dtype=Float), "i": Any, "value": Any},
+    value_type=None,
+    dispatch_func=vector_assign_dispatch_func,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+# implements transformation.p &= vec3
+add_builtin(
+    "transform_and_inplace",
+    input_types={"a": transformation(dtype=Float), "value": vector(length=3, dtype=Float)},
+    value_type=None,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+
+# implements vector[idx] |= scalar
+add_builtin(
+    "or_inplace",
+    input_types={"a": vector(length=Any, dtype=Scalar), "i": Any, "value": Any},
+    value_type=None,
+    dispatch_func=vector_assign_dispatch_func,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+# implements quaternion[idx] |= scalar
+add_builtin(
+    "or_inplace",
+    input_types={"a": quaternion(dtype=Scalar), "i": Any, "value": Any},
+    value_type=None,
+    dispatch_func=vector_assign_dispatch_func,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+# implements transformation[idx] |= scalar
+add_builtin(
+    "or_inplace",
+    input_types={"a": transformation(dtype=Float), "i": Any, "value": Any},
+    value_type=None,
+    dispatch_func=vector_assign_dispatch_func,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+# implements transformation.p |= vec3
+add_builtin(
+    "transform_or_inplace",
+    input_types={"a": transformation(dtype=Float), "value": vector(length=3, dtype=Float)},
+    value_type=None,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+
+# implements vector[idx] ^= scalar
+add_builtin(
+    "xor_inplace",
+    input_types={"a": vector(length=Any, dtype=Scalar), "i": Any, "value": Any},
+    value_type=None,
+    dispatch_func=vector_assign_dispatch_func,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+# implements quaternion[idx] ^= scalar
+add_builtin(
+    "xor_inplace",
+    input_types={"a": quaternion(dtype=Scalar), "i": Any, "value": Any},
+    value_type=None,
+    dispatch_func=vector_assign_dispatch_func,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+# implements transformation[idx] ^= scalar
+add_builtin(
+    "xor_inplace",
+    input_types={"a": transformation(dtype=Float), "i": Any, "value": Any},
+    value_type=None,
+    dispatch_func=vector_assign_dispatch_func,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+# implements transformation.p ^= vec3
+add_builtin(
+    "transform_xor_inplace",
+    input_types={"a": transformation(dtype=Float), "value": vector(length=3, dtype=Float)},
+    value_type=None,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+
 def matrix_index_row_value_func(arg_types: Mapping[str, type], arg_values: Mapping[str, Any]):
     mat_type = arg_types["a"]
     row_type = mat_type._wp_row_type_
@@ -7057,6 +7288,72 @@ add_builtin(
 # implements matrix[i,j] -= value
 add_builtin(
     "sub_inplace",
+    input_types={"a": matrix(shape=(Any, Any), dtype=Scalar), "i": Any, "j": Any, "value": Any},
+    value_type=None,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+
+# implements matrix[i] &= value
+add_builtin(
+    "and_inplace",
+    input_types={"a": matrix(shape=(Any, Any), dtype=Scalar), "i": Any, "value": Any},
+    value_type=None,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+
+# implements matrix[i,j] &= value
+add_builtin(
+    "and_inplace",
+    input_types={"a": matrix(shape=(Any, Any), dtype=Scalar), "i": Any, "j": Any, "value": Any},
+    value_type=None,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+
+# implements matrix[i] |= value
+add_builtin(
+    "or_inplace",
+    input_types={"a": matrix(shape=(Any, Any), dtype=Scalar), "i": Any, "value": Any},
+    value_type=None,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+
+# implements matrix[i,j] |= value
+add_builtin(
+    "or_inplace",
+    input_types={"a": matrix(shape=(Any, Any), dtype=Scalar), "i": Any, "j": Any, "value": Any},
+    value_type=None,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+
+# implements matrix[i] ^= value
+add_builtin(
+    "xor_inplace",
+    input_types={"a": matrix(shape=(Any, Any), dtype=Scalar), "i": Any, "value": Any},
+    value_type=None,
+    hidden=True,
+    export=False,
+    group="Utility",
+)
+
+
+# implements matrix[i,j] ^= value
+add_builtin(
+    "xor_inplace",
     input_types={"a": matrix(shape=(Any, Any), dtype=Scalar), "i": Any, "j": Any, "value": Any},
     value_type=None,
     hidden=True,
@@ -7893,6 +8190,42 @@ add_builtin(
     export=False,
     hidden=True,
     native_func="tile_sub_inplace",
+    group="Operators",
+)
+
+
+add_builtin(
+    "and_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "b": tile(dtype=Any, shape=Tuple[int, ...])},
+    value_type=None,
+    dispatch_func=tile_inplace_dispatch_func,
+    export=False,
+    hidden=True,
+    native_func="tile_and_inplace",
+    group="Operators",
+)
+
+
+add_builtin(
+    "or_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "b": tile(dtype=Any, shape=Tuple[int, ...])},
+    value_type=None,
+    dispatch_func=tile_inplace_dispatch_func,
+    export=False,
+    hidden=True,
+    native_func="tile_or_inplace",
+    group="Operators",
+)
+
+
+add_builtin(
+    "xor_inplace",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "b": tile(dtype=Any, shape=Tuple[int, ...])},
+    value_type=None,
+    dispatch_func=tile_inplace_dispatch_func,
+    export=False,
+    hidden=True,
+    native_func="tile_xor_inplace",
     group="Operators",
 )
 

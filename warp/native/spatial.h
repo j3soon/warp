@@ -303,6 +303,24 @@ inline CUDA_CALLABLE void transform_sub_inplace(transform_t<Type>& t, const vec_
 }
 
 template<typename Type>
+inline CUDA_CALLABLE void transform_and_inplace(transform_t<Type>& t, const vec_t<3, Type>& p)
+{
+    t.p &= p;
+}
+
+template<typename Type>
+inline CUDA_CALLABLE void transform_or_inplace(transform_t<Type>& t, const vec_t<3, Type>& p)
+{
+    t.p |= p;
+}
+
+template<typename Type>
+inline CUDA_CALLABLE void transform_xor_inplace(transform_t<Type>& t, const vec_t<3, Type>& p)
+{
+    t.p ^= p;
+}
+
+template<typename Type>
 inline CUDA_CALLABLE void adj_transform_add_inplace(transform_t<Type>& t, const vec_t<3, Type>& p, transform_t<Type>& adj_t, vec_t<3, Type>& adj_p)
 {
     adj_p += adj_t.p;
@@ -313,6 +331,15 @@ inline CUDA_CALLABLE void adj_transform_sub_inplace(transform_t<Type>& t, const 
 {
     adj_p -= adj_t.p;
 }
+
+template<typename Type>
+inline CUDA_CALLABLE void adj_transform_and_inplace(transform_t<Type>& t, const vec_t<3, Type>& p, transform_t<Type>& adj_t, vec_t<3, Type>& adj_p) {}
+
+template<typename Type>
+inline CUDA_CALLABLE void adj_transform_or_inplace(transform_t<Type>& t, const vec_t<3, Type>& p, transform_t<Type>& adj_t, vec_t<3, Type>& adj_p) {}
+
+template<typename Type>
+inline CUDA_CALLABLE void adj_transform_xor_inplace(transform_t<Type>& t, const vec_t<3, Type>& p, transform_t<Type>& adj_t, vec_t<3, Type>& adj_p) {}
 
 template<typename Type>
 CUDA_CALLABLE inline transform_t<Type> transform_multiply(const transform_t<Type>& a, const transform_t<Type>& b)
@@ -807,6 +834,264 @@ inline CUDA_CALLABLE void adj_sub_inplace(
 
     assert(ii == SliceLength);
 }
+
+
+template<typename Type>
+inline CUDA_CALLABLE void and_inplace(transform_t<Type>& t, int idx, Type value)
+{
+#ifndef NDEBUG
+    if (idx < -7 || idx >= 7)
+    {
+        printf("transformation index %d out of bounds at %s %d\n", idx, __FILE__, __LINE__);
+        assert(0);
+    }
+#endif
+
+    if (idx < 0)
+    {
+        idx += 7;
+    }
+
+    t[idx] &= value;
+}
+
+
+template<typename Type>
+inline CUDA_CALLABLE void and_inplace(transform_t<Type>& t, slice_t slice, Type value)
+{
+    assert(slice.start >= 0 && slice.start <= 7);
+    assert(slice.stop >= -1 && slice.stop <= 7);
+    assert(slice.step != 0 && slice.step < 0 ? slice.start >= slice.stop : slice.start <= slice.stop);
+
+    bool is_reversed = slice.step < 0;
+
+    for (
+        int i = slice.start;
+        is_reversed ? (i > slice.stop) : (i < slice.stop);
+        i += slice.step
+    )
+    {
+        t[i] &= value;
+    }
+}
+
+
+template<unsigned SliceLength, typename Type>
+inline CUDA_CALLABLE void and_inplace(transform_t<Type>& t, slice_t slice, const vec_t<SliceLength, Type> &a)
+{
+    assert(slice.start >= 0 && slice.start <= 7);
+    assert(slice.stop >= -1 && slice.stop <= 7);
+    assert(slice.step != 0 && slice.step < 0 ? slice.start >= slice.stop : slice.start <= slice.stop);
+    assert(slice_get_length(slice) == SliceLength);
+
+    bool is_reversed = slice.step < 0;
+
+    int ii = 0;
+    for (
+        int i = slice.start;
+        is_reversed ? (i > slice.stop) : (i < slice.stop);
+        i += slice.step
+    )
+    {
+        t[i] &= a[ii];
+        ++ii;
+    }
+
+    assert(ii == SliceLength);
+}
+
+
+template<typename Type>
+inline CUDA_CALLABLE void adj_and_inplace(
+    transform_t<Type>& t, int idx, Type value,
+    transform_t<Type>& adj_t, int adj_idx, Type& adj_value
+) {}
+
+
+template<typename Type>
+inline CUDA_CALLABLE void adj_and_inplace(
+    const transform_t<Type>& t, slice_t slice, Type value,
+    transform_t<Type>& adj_t, slice_t& adj_slice, Type& adj_value
+) {}
+
+
+template<unsigned SliceLength, typename Type>
+inline CUDA_CALLABLE void adj_and_inplace(
+    const transform_t<Type>& t, slice_t slice, const vec_t<SliceLength, Type> &a,
+    transform_t<Type>& adj_t, slice_t& adj_slice, vec_t<SliceLength, Type>& adj_a
+) {}
+
+
+template<typename Type>
+inline CUDA_CALLABLE void or_inplace(transform_t<Type>& t, int idx, Type value)
+{
+#ifndef NDEBUG
+    if (idx < -7 || idx >= 7)
+    {
+        printf("transformation index %d out of bounds at %s %d\n", idx, __FILE__, __LINE__);
+        assert(0);
+    }
+#endif
+
+    if (idx < 0)
+    {
+        idx += 7;
+    }
+
+    t[idx] |= value;
+}
+
+
+template<typename Type>
+inline CUDA_CALLABLE void or_inplace(transform_t<Type>& t, slice_t slice, Type value)
+{
+    assert(slice.start >= 0 && slice.start <= 7);
+    assert(slice.stop >= -1 && slice.stop <= 7);
+    assert(slice.step != 0 && slice.step < 0 ? slice.start >= slice.stop : slice.start <= slice.stop);
+
+    bool is_reversed = slice.step < 0;
+
+    for (
+        int i = slice.start;
+        is_reversed ? (i > slice.stop) : (i < slice.stop);
+        i += slice.step
+    )
+    {
+        t[i] |= value;
+    }
+}
+
+
+template<unsigned SliceLength, typename Type>
+inline CUDA_CALLABLE void or_inplace(transform_t<Type>& t, slice_t slice, const vec_t<SliceLength, Type> &a)
+{
+    assert(slice.start >= 0 && slice.start <= 7);
+    assert(slice.stop >= -1 && slice.stop <= 7);
+    assert(slice.step != 0 && slice.step < 0 ? slice.start >= slice.stop : slice.start <= slice.stop);
+    assert(slice_get_length(slice) == SliceLength);
+
+    bool is_reversed = slice.step < 0;
+
+    int ii = 0;
+    for (
+        int i = slice.start;
+        is_reversed ? (i > slice.stop) : (i < slice.stop);
+        i += slice.step
+    )
+    {
+        t[i] |= a[ii];
+        ++ii;
+    }
+
+    assert(ii == SliceLength);
+}
+
+
+template<typename Type>
+inline CUDA_CALLABLE void adj_or_inplace(
+    transform_t<Type>& t, int idx, Type value,
+    transform_t<Type>& adj_t, int adj_idx, Type& adj_value
+) {}
+
+
+template<typename Type>
+inline CUDA_CALLABLE void adj_or_inplace(
+    const transform_t<Type>& t, slice_t slice, Type value,
+    transform_t<Type>& adj_t, slice_t& adj_slice, Type& adj_value
+) {}
+
+
+template<unsigned SliceLength, typename Type>
+inline CUDA_CALLABLE void adj_or_inplace(
+    const transform_t<Type>& t, slice_t slice, const vec_t<SliceLength, Type> &a,
+    transform_t<Type>& adj_t, slice_t& adj_slice, vec_t<SliceLength, Type>& adj_a
+) {}
+
+
+template<typename Type>
+inline CUDA_CALLABLE void xor_inplace(transform_t<Type>& t, int idx, Type value)
+{
+#ifndef NDEBUG
+    if (idx < -7 || idx >= 7)
+    {
+        printf("transformation index %d out of bounds at %s %d\n", idx, __FILE__, __LINE__);
+        assert(0);
+    }
+#endif
+
+    if (idx < 0)
+    {
+        idx += 7;
+    }
+
+    t[idx] ^= value;
+}
+
+
+template<typename Type>
+inline CUDA_CALLABLE void xor_inplace(transform_t<Type>& t, slice_t slice, Type value)
+{
+    assert(slice.start >= 0 && slice.start <= 7);
+    assert(slice.stop >= -1 && slice.stop <= 7);
+    assert(slice.step != 0 && slice.step < 0 ? slice.start >= slice.stop : slice.start <= slice.stop);
+
+    bool is_reversed = slice.step < 0;
+
+    for (
+        int i = slice.start;
+        is_reversed ? (i > slice.stop) : (i < slice.stop);
+        i += slice.step
+    )
+    {
+        t[i] ^= value;
+    }
+}
+
+
+template<unsigned SliceLength, typename Type>
+inline CUDA_CALLABLE void xor_inplace(transform_t<Type>& t, slice_t slice, const vec_t<SliceLength, Type> &a)
+{
+    assert(slice.start >= 0 && slice.start <= 7);
+    assert(slice.stop >= -1 && slice.stop <= 7);
+    assert(slice.step != 0 && slice.step < 0 ? slice.start >= slice.stop : slice.start <= slice.stop);
+    assert(slice_get_length(slice) == SliceLength);
+
+    bool is_reversed = slice.step < 0;
+
+    int ii = 0;
+    for (
+        int i = slice.start;
+        is_reversed ? (i > slice.stop) : (i < slice.stop);
+        i += slice.step
+    )
+    {
+        t[i] ^= a[ii];
+        ++ii;
+    }
+
+    assert(ii == SliceLength);
+}
+
+
+template<typename Type>
+inline CUDA_CALLABLE void adj_xor_inplace(
+    transform_t<Type>& t, int idx, Type value,
+    transform_t<Type>& adj_t, int adj_idx, Type& adj_value
+) {}
+
+
+template<typename Type>
+inline CUDA_CALLABLE void adj_xor_inplace(
+    const transform_t<Type>& t, slice_t slice, Type value,
+    transform_t<Type>& adj_t, slice_t& adj_slice, Type& adj_value
+) {}
+
+
+template<unsigned SliceLength, typename Type>
+inline CUDA_CALLABLE void adj_xor_inplace(
+    const transform_t<Type>& t, slice_t slice, const vec_t<SliceLength, Type> &a,
+    transform_t<Type>& adj_t, slice_t& adj_slice, vec_t<SliceLength, Type>& adj_a
+) {}
 
 
 template<typename Type>

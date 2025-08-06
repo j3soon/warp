@@ -868,6 +868,264 @@ inline CUDA_CALLABLE void adj_sub_inplace(
 
 
 template<unsigned Length, typename Type>
+inline CUDA_CALLABLE void and_inplace(vec_t<Length, Type>& v, int idx, Type value)
+{
+#ifndef NDEBUG
+    if (idx < -(int)Length || idx >= (int)Length)
+    {
+        printf("vec index %d out of bounds at %s %d\n", idx, __FILE__, __LINE__);
+        assert(0);
+    }
+#endif
+
+    if (idx < 0)
+    {
+        idx += Length;
+    }
+
+    v[idx] &= value;
+}
+
+
+template<unsigned Length, typename Type>
+inline CUDA_CALLABLE void and_inplace(vec_t<Length, Type>& v, slice_t slice, Type value)
+{
+    assert(slice.start >= 0 && slice.start <= (int)Length);
+    assert(slice.stop >= -1 && slice.stop <= (int)Length);
+    assert(slice.step != 0 && slice.step < 0 ? slice.start >= slice.stop : slice.start <= slice.stop);
+
+    bool is_reversed = slice.step < 0;
+
+    for (
+        int i = slice.start;
+        is_reversed ? (i > slice.stop) : (i < slice.stop);
+        i += slice.step
+    )
+    {
+        v[i] &= value;
+    }
+}
+
+
+template<unsigned SliceLength, unsigned Length, typename Type>
+inline CUDA_CALLABLE void and_inplace(vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a)
+{
+    assert(slice.start >= 0 && slice.start <= (int)Length);
+    assert(slice.stop >= -1 && slice.stop <= (int)Length);
+    assert(slice.step != 0 && slice.step < 0 ? slice.start >= slice.stop : slice.start <= slice.stop);
+    assert(slice_get_length(slice) == SliceLength);
+
+    bool is_reversed = slice.step < 0;
+
+    int ii = 0;
+    for (
+        int i = slice.start;
+        is_reversed ? (i > slice.stop) : (i < slice.stop);
+        i += slice.step
+    )
+    {
+        v[i] &= a[ii];
+        ++ii;
+    }
+
+    assert(ii == SliceLength);
+}
+
+
+template<unsigned Length, typename Type>
+inline CUDA_CALLABLE void adj_and_inplace(
+    vec_t<Length, Type>& v, int idx, Type value,
+    vec_t<Length, Type>& adj_v, int adj_idx, Type& adj_value
+) {}
+
+
+template<unsigned Length, typename Type>
+inline CUDA_CALLABLE void adj_and_inplace(
+    const vec_t<Length, Type>& v, slice_t slice, Type value,
+    vec_t<Length, Type>& adj_v, slice_t& adj_slice, Type& adj_value
+) {}
+
+
+template<unsigned SliceLength, unsigned Length, typename Type>
+inline CUDA_CALLABLE void adj_and_inplace(
+    const vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a,
+    vec_t<Length, Type>& adj_v, slice_t& adj_slice, vec_t<SliceLength, Type>& adj_a
+) {}
+
+
+template<unsigned Length, typename Type>
+inline CUDA_CALLABLE void or_inplace(vec_t<Length, Type>& v, int idx, Type value)
+{
+#ifndef NDEBUG
+    if (idx < -(int)Length || idx >= (int)Length)
+    {
+        printf("vec index %d out of bounds at %s %d\n", idx, __FILE__, __LINE__);
+        assert(0);
+    }
+#endif
+
+    if (idx < 0)
+    {
+        idx += Length;
+    }
+
+    v[idx] |= value;
+}
+
+
+template<unsigned Length, typename Type>
+inline CUDA_CALLABLE void or_inplace(vec_t<Length, Type>& v, slice_t slice, Type value)
+{
+    assert(slice.start >= 0 && slice.start <= (int)Length);
+    assert(slice.stop >= -1 && slice.stop <= (int)Length);
+    assert(slice.step != 0 && slice.step < 0 ? slice.start >= slice.stop : slice.start <= slice.stop);
+
+    bool is_reversed = slice.step < 0;
+
+    for (
+        int i = slice.start;
+        is_reversed ? (i > slice.stop) : (i < slice.stop);
+        i += slice.step
+    )
+    {
+        v[i] |= value;
+    }
+}
+
+
+template<unsigned SliceLength, unsigned Length, typename Type>
+inline CUDA_CALLABLE void or_inplace(vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a)
+{
+    assert(slice.start >= 0 && slice.start <= (int)Length);
+    assert(slice.stop >= -1 && slice.stop <= (int)Length);
+    assert(slice.step != 0 && slice.step < 0 ? slice.start >= slice.stop : slice.start <= slice.stop);
+    assert(slice_get_length(slice) == SliceLength);
+
+    bool is_reversed = slice.step < 0;
+
+    int ii = 0;
+    for (
+        int i = slice.start;
+        is_reversed ? (i > slice.stop) : (i < slice.stop);
+        i += slice.step
+    )
+    {
+        v[i] |= a[ii];
+        ++ii;
+    }
+
+    assert(ii == SliceLength);
+}
+
+
+template<unsigned Length, typename Type>
+inline CUDA_CALLABLE void adj_or_inplace(
+    vec_t<Length, Type>& v, int idx, Type value,
+    vec_t<Length, Type>& adj_v, int adj_idx, Type& adj_value
+) {}
+
+
+template<unsigned Length, typename Type>
+inline CUDA_CALLABLE void adj_or_inplace(
+    const vec_t<Length, Type>& v, slice_t slice, Type value,
+    vec_t<Length, Type>& adj_v, slice_t& adj_slice, Type& adj_value
+) {}
+
+
+template<unsigned SliceLength, unsigned Length, typename Type>
+inline CUDA_CALLABLE void adj_or_inplace(
+    const vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a,
+    vec_t<Length, Type>& adj_v, slice_t& adj_slice, vec_t<SliceLength, Type>& adj_a
+) {}
+
+
+template<unsigned Length, typename Type>
+inline CUDA_CALLABLE void xor_inplace(vec_t<Length, Type>& v, int idx, Type value)
+{
+#ifndef NDEBUG
+    if (idx < -(int)Length || idx >= (int)Length)
+    {
+        printf("vec index %d out of bounds at %s %d\n", idx, __FILE__, __LINE__);
+        assert(0);
+    }
+#endif
+
+    if (idx < 0)
+    {
+        idx += Length;
+    }
+
+    v[idx] ^= value;
+}
+
+
+template<unsigned Length, typename Type>
+inline CUDA_CALLABLE void xor_inplace(vec_t<Length, Type>& v, slice_t slice, Type value)
+{
+    assert(slice.start >= 0 && slice.start <= (int)Length);
+    assert(slice.stop >= -1 && slice.stop <= (int)Length);
+    assert(slice.step != 0 && slice.step < 0 ? slice.start >= slice.stop : slice.start <= slice.stop);
+
+    bool is_reversed = slice.step < 0;
+
+    for (
+        int i = slice.start;
+        is_reversed ? (i > slice.stop) : (i < slice.stop);
+        i += slice.step
+    )
+    {
+        v[i] ^= value;
+    }
+}
+
+
+template<unsigned SliceLength, unsigned Length, typename Type>
+inline CUDA_CALLABLE void xor_inplace(vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a)
+{
+    assert(slice.start >= 0 && slice.start <= (int)Length);
+    assert(slice.stop >= -1 && slice.stop <= (int)Length);
+    assert(slice.step != 0 && slice.step < 0 ? slice.start >= slice.stop : slice.start <= slice.stop);
+    assert(slice_get_length(slice) == SliceLength);
+
+    bool is_reversed = slice.step < 0;
+
+    int ii = 0;
+    for (
+        int i = slice.start;
+        is_reversed ? (i > slice.stop) : (i < slice.stop);
+        i += slice.step
+    )
+    {
+        v[i] ^= a[ii];
+        ++ii;
+    }
+
+    assert(ii == SliceLength);
+}
+
+
+template<unsigned Length, typename Type>
+inline CUDA_CALLABLE void adj_xor_inplace(
+    vec_t<Length, Type>& v, int idx, Type value,
+    vec_t<Length, Type>& adj_v, int adj_idx, Type& adj_value
+) {}
+
+
+template<unsigned Length, typename Type>
+inline CUDA_CALLABLE void adj_xor_inplace(
+    const vec_t<Length, Type>& v, slice_t slice, Type value,
+    vec_t<Length, Type>& adj_v, slice_t& adj_slice, Type& adj_value
+) {}
+
+
+template<unsigned SliceLength, unsigned Length, typename Type>
+inline CUDA_CALLABLE void adj_xor_inplace(
+    const vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a,
+    vec_t<Length, Type>& adj_v, slice_t& adj_slice, vec_t<SliceLength, Type>& adj_a
+) {}
+
+
+template<unsigned Length, typename Type>
 inline CUDA_CALLABLE void assign_inplace(vec_t<Length, Type>& v, int idx, Type value)
 {
 #ifndef NDEBUG
