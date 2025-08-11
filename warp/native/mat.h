@@ -438,6 +438,42 @@ inline CUDA_CALLABLE mat_t<Rows,Cols,Type> atomic_add(mat_t<Rows,Cols,Type> * ad
 }
 
 template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> atomic_and(mat_t<Rows,Cols,Type> * addr, mat_t<Rows,Cols,Type> value) 
+{
+    mat_t<Rows,Cols,Type> m;
+    
+    for (unsigned i=0; i < Rows; ++i)
+        for (unsigned j=0; j < Cols; ++j)
+            m.data[i][j] = atomic_and(&addr->data[i][j], value.data[i][j]);
+
+    return m;
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> atomic_or(mat_t<Rows,Cols,Type> * addr, mat_t<Rows,Cols,Type> value) 
+{
+    mat_t<Rows,Cols,Type> m;
+    
+    for (unsigned i=0; i < Rows; ++i)
+        for (unsigned j=0; j < Cols; ++j)
+            m.data[i][j] = atomic_or(&addr->data[i][j], value.data[i][j]);
+
+    return m;
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> atomic_xor(mat_t<Rows,Cols,Type> * addr, mat_t<Rows,Cols,Type> value) 
+{
+    mat_t<Rows,Cols,Type> m;
+    
+    for (unsigned i=0; i < Rows; ++i)
+        for (unsigned j=0; j < Cols; ++j)
+            m.data[i][j] = atomic_xor(&addr->data[i][j], value.data[i][j]);
+
+    return m;
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
 inline CUDA_CALLABLE mat_t<Rows,Cols,Type> atomic_min(mat_t<Rows,Cols,Type> * addr, mat_t<Rows,Cols,Type> value) 
 {
     mat_t<Rows,Cols,Type> m;
@@ -4871,6 +4907,252 @@ inline CUDA_CALLABLE mat_t<Rows,Cols,Type> mod(const mat_t<Rows,Cols,Type>& a, T
     return t;
 }
 
+// bitwise AND
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> bit_and(const mat_t<Rows,Cols,Type>& a, const mat_t<Rows,Cols,Type>& b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a.data[i][j] & b.data[i][j];
+        }
+    }
+
+    return t;
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> bit_and(const mat_t<Rows,Cols,Type>& a, Type b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a.data[i][j] & b;
+        }
+    }
+
+    return t;
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> bit_and(Type a, const mat_t<Rows,Cols,Type>& b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a & b.data[i][j];
+        }
+    }
+
+    return t;
+}
+
+// bitwise OR
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> bit_or(const mat_t<Rows,Cols,Type>& a, const mat_t<Rows,Cols,Type>& b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a.data[i][j] | b.data[i][j];
+        }
+    }
+
+    return t;
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> bit_or(const mat_t<Rows,Cols,Type>& a, Type b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a.data[i][j] | b;
+        }
+    }
+
+    return t;
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> bit_or(Type a, const mat_t<Rows,Cols,Type>& b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a | b.data[i][j];
+        }
+    }
+
+    return t;
+}
+
+// bitwise XOR
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> bit_xor(const mat_t<Rows,Cols,Type>& a, const mat_t<Rows,Cols,Type>& b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a.data[i][j] ^ b.data[i][j];
+        }
+    }
+
+    return t;
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> bit_xor(const mat_t<Rows,Cols,Type>& a, Type b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a.data[i][j] ^ b;
+        }
+    }
+
+    return t;
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> bit_xor(Type a, const mat_t<Rows,Cols,Type>& b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a ^ b.data[i][j];
+        }
+    }
+
+    return t;
+}
+
+// left shift
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> lshift(const mat_t<Rows,Cols,Type>& a, const mat_t<Rows,Cols,Type>& b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a.data[i][j] << b.data[i][j];
+        }
+    }
+
+    return t;
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> lshift(const mat_t<Rows,Cols,Type>& a, Type b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a.data[i][j] << b;
+        }
+    }
+
+    return t;
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> lshift(Type a, const mat_t<Rows,Cols,Type>& b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a << b.data[i][j];
+        }
+    }
+
+    return t;
+}
+
+// right shift
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> rshift(const mat_t<Rows,Cols,Type>& a, const mat_t<Rows,Cols,Type>& b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a.data[i][j] >> b.data[i][j];
+        }
+    }
+
+    return t;
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> rshift(const mat_t<Rows,Cols,Type>& a, Type b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a.data[i][j] >> b;
+        }
+    }
+
+    return t;
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> rshift(Type a, const mat_t<Rows,Cols,Type>& b)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = a >> b.data[i][j];
+        }
+    }
+
+    return t;
+}
+
+// invert
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE mat_t<Rows,Cols,Type> invert(const mat_t<Rows,Cols,Type>& m)
+{
+    mat_t<Rows,Cols,Type> t;
+    for (unsigned i=0; i < Rows; ++i)
+    {
+        for (unsigned j=0; j < Cols; ++j)
+        {
+            t.data[i][j] = ~m.data[i][j];
+        }
+    }
+
+    return t;
+}
+
 template<unsigned Rows, unsigned Cols, typename Type>
 inline CUDA_CALLABLE Type ddot(const mat_t<Rows,Cols,Type>& a, const mat_t<Rows,Cols,Type>& b)
 {
@@ -5553,6 +5835,126 @@ inline CUDA_CALLABLE void adj_sub(
 }
 
 template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_bit_and(const mat_t<Rows,Cols,Type>& a, const mat_t<Rows,Cols,Type>& b, mat_t<Rows,Cols,Type>& adj_a, mat_t<Rows,Cols,Type>& adj_b, const mat_t<Rows,Cols,Type>& adj_ret)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_bit_and(
+    const mat_t<Rows,Cols,Type>& a, Type b,
+    mat_t<Rows,Cols,Type>& adj_a, Type& adj_b,
+    const mat_t<Rows,Cols,Type>& adj_ret
+)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_bit_and(
+    Type a, const mat_t<Rows,Cols,Type>& b,
+    Type& adj_a, mat_t<Rows,Cols,Type>& adj_b,
+    const mat_t<Rows,Cols,Type>& adj_ret
+)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_bit_or(const mat_t<Rows,Cols,Type>& a, const mat_t<Rows,Cols,Type>& b, mat_t<Rows,Cols,Type>& adj_a, mat_t<Rows,Cols,Type>& adj_b, const mat_t<Rows,Cols,Type>& adj_ret)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_bit_or(
+    const mat_t<Rows,Cols,Type>& a, Type b,
+    mat_t<Rows,Cols,Type>& adj_a, Type& adj_b,
+    const mat_t<Rows,Cols,Type>& adj_ret
+)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_bit_or(
+    Type a, const mat_t<Rows,Cols,Type>& b,
+    Type& adj_a, mat_t<Rows,Cols,Type>& adj_b,
+    const mat_t<Rows,Cols,Type>& adj_ret
+)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_bit_xor(const mat_t<Rows,Cols,Type>& a, const mat_t<Rows,Cols,Type>& b, mat_t<Rows,Cols,Type>& adj_a, mat_t<Rows,Cols,Type>& adj_b, const mat_t<Rows,Cols,Type>& adj_ret)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_bit_xor(
+    const mat_t<Rows,Cols,Type>& a, Type b,
+    mat_t<Rows,Cols,Type>& adj_a, Type& adj_b,
+    const mat_t<Rows,Cols,Type>& adj_ret
+)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_bit_xor(
+    Type a, const mat_t<Rows,Cols,Type>& b,
+    Type& adj_a, mat_t<Rows,Cols,Type>& adj_b,
+    const mat_t<Rows,Cols,Type>& adj_ret
+)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_lshift(const mat_t<Rows,Cols,Type>& a, const mat_t<Rows,Cols,Type>& b, mat_t<Rows,Cols,Type>& adj_a, mat_t<Rows,Cols,Type>& adj_b, const mat_t<Rows,Cols,Type>& adj_ret)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_lshift(
+    const mat_t<Rows,Cols,Type>& a, Type b,
+    mat_t<Rows,Cols,Type>& adj_a, Type& adj_b,
+    const mat_t<Rows,Cols,Type>& adj_ret
+)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_lshift(
+    Type a, const mat_t<Rows,Cols,Type>& b,
+    Type& adj_a, mat_t<Rows,Cols,Type>& adj_b,
+    const mat_t<Rows,Cols,Type>& adj_ret
+)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_rshift(const mat_t<Rows,Cols,Type>& a, const mat_t<Rows,Cols,Type>& b, mat_t<Rows,Cols,Type>& adj_a, mat_t<Rows,Cols,Type>& adj_b, const mat_t<Rows,Cols,Type>& adj_ret)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_rshift(
+    const mat_t<Rows,Cols,Type>& a, Type b,
+    mat_t<Rows,Cols,Type>& adj_a, Type& adj_b,
+    const mat_t<Rows,Cols,Type>& adj_ret
+)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_rshift(
+    Type a, const mat_t<Rows,Cols,Type>& b,
+    Type& adj_a, mat_t<Rows,Cols,Type>& adj_b,
+    const mat_t<Rows,Cols,Type>& adj_ret
+)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
+inline CUDA_CALLABLE void adj_invert(const mat_t<Rows,Cols,Type>& m, mat_t<Rows,Cols,Type>& adj_m, const mat_t<Rows,Cols,Type>& adj_ret)
+{
+}
+
+template<unsigned Rows, unsigned Cols, typename Type>
 inline CUDA_CALLABLE void adj_div(const mat_t<Rows,Cols,Type>& a, Type s, mat_t<Rows,Cols,Type>& adj_a, Type& adj_s, const mat_t<Rows,Cols,Type>& adj_ret)
 {
     adj_s -= tensordot(a , adj_ret)/ (s * s); // - a / s^2
@@ -6114,6 +6516,34 @@ template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_add(
 template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_add(mat_t<Rows, Cols, uint32>* buf, const mat_t<Rows, Cols, uint32> &value) { }
 template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_add(mat_t<Rows, Cols, int64>* buf, const mat_t<Rows, Cols, int64> &value) { }
 template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_add(mat_t<Rows, Cols, uint64>* buf, const mat_t<Rows, Cols, uint64> &value) { }
+
+// for bitwise operations we do not accumulate gradients
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_and(mat_t<Rows, Cols, int8>* buf, const mat_t<Rows, Cols, int8> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_and(mat_t<Rows, Cols, uint8>* buf, const mat_t<Rows, Cols, uint8> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_and(mat_t<Rows, Cols, int16>* buf, const mat_t<Rows, Cols, int16> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_and(mat_t<Rows, Cols, uint16>* buf, const mat_t<Rows, Cols, uint16> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_and(mat_t<Rows, Cols, int32>* buf, const mat_t<Rows, Cols, int32> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_and(mat_t<Rows, Cols, uint32>* buf, const mat_t<Rows, Cols, uint32> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_and(mat_t<Rows, Cols, int64>* buf, const mat_t<Rows, Cols, int64> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_and(mat_t<Rows, Cols, uint64>* buf, const mat_t<Rows, Cols, uint64> &value) { }
+
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_or(mat_t<Rows, Cols, int8>* buf, const mat_t<Rows, Cols, int8> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_or(mat_t<Rows, Cols, uint8>* buf, const mat_t<Rows, Cols, uint8> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_or(mat_t<Rows, Cols, int16>* buf, const mat_t<Rows, Cols, int16> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_or(mat_t<Rows, Cols, uint16>* buf, const mat_t<Rows, Cols, uint16> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_or(mat_t<Rows, Cols, int32>* buf, const mat_t<Rows, Cols, int32> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_or(mat_t<Rows, Cols, uint32>* buf, const mat_t<Rows, Cols, uint32> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_or(mat_t<Rows, Cols, int64>* buf, const mat_t<Rows, Cols, int64> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_or(mat_t<Rows, Cols, uint64>* buf, const mat_t<Rows, Cols, uint64> &value) { }
+
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_xor(mat_t<Rows, Cols, int8>* buf, const mat_t<Rows, Cols, int8> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_xor(mat_t<Rows, Cols, uint8>* buf, const mat_t<Rows, Cols, uint8> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_xor(mat_t<Rows, Cols, int16>* buf, const mat_t<Rows, Cols, int16> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_xor(mat_t<Rows, Cols, uint16>* buf, const mat_t<Rows, Cols, uint16> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_xor(mat_t<Rows, Cols, int32>* buf, const mat_t<Rows, Cols, int32> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_xor(mat_t<Rows, Cols, uint32>* buf, const mat_t<Rows, Cols, uint32> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_xor(mat_t<Rows, Cols, int64>* buf, const mat_t<Rows, Cols, int64> &value) { }
+template<unsigned Rows, unsigned Cols> CUDA_CALLABLE inline void adj_atomic_xor(mat_t<Rows, Cols, uint64>* buf, const mat_t<Rows, Cols, uint64> &value) { }
 
 using mat22h = mat_t<2,2,half>;
 using mat33h = mat_t<3,3,half>;

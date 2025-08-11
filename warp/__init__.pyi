@@ -3173,6 +3173,21 @@ def bit_and(a: Int, b: Vector[Any, Int]) -> Vector[Any, Int]:
     ...
 
 @over
+def bit_and(a: Matrix[Any, Any, Int], b: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
+    """ """
+    ...
+
+@over
+def bit_and(a: Matrix[Any, Any, Int], b: Int) -> Matrix[Any, Any, Int]:
+    """ """
+    ...
+
+@over
+def bit_and(a: Int, b: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
+    """ """
+    ...
+
+@over
 def bit_or(a: Int, b: Int) -> Int:
     """ """
     ...
@@ -3189,6 +3204,21 @@ def bit_or(a: Vector[Any, Int], b: Int) -> Vector[Any, Int]:
 
 @over
 def bit_or(a: Int, b: Vector[Any, Int]) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
+def bit_or(a: Matrix[Any, Any, Int], b: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
+    """ """
+    ...
+
+@over
+def bit_or(a: Matrix[Any, Any, Int], b: Int) -> Matrix[Any, Any, Int]:
+    """ """
+    ...
+
+@over
+def bit_or(a: Int, b: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
     """ """
     ...
 
@@ -3213,6 +3243,21 @@ def bit_xor(a: Int, b: Vector[Any, Int]) -> Vector[Any, Int]:
     ...
 
 @over
+def bit_xor(a: Matrix[Any, Any, Int], b: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
+    """ """
+    ...
+
+@over
+def bit_xor(a: Matrix[Any, Any, Int], b: Int) -> Matrix[Any, Any, Int]:
+    """ """
+    ...
+
+@over
+def bit_xor(a: Int, b: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
+    """ """
+    ...
+
+@over
 def lshift(a: Int, b: Int) -> Int:
     """ """
     ...
@@ -3229,6 +3274,21 @@ def lshift(a: Vector[Any, Int], b: Int) -> Vector[Any, Int]:
 
 @over
 def lshift(a: Int, b: Vector[Any, Int]) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
+def lshift(a: Matrix[Any, Any, Int], b: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
+    """ """
+    ...
+
+@over
+def lshift(a: Matrix[Any, Any, Int], b: Int) -> Matrix[Any, Any, Int]:
+    """ """
+    ...
+
+@over
+def lshift(a: Int, b: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
     """ """
     ...
 
@@ -3253,12 +3313,32 @@ def rshift(a: Int, b: Vector[Any, Int]) -> Vector[Any, Int]:
     ...
 
 @over
+def rshift(a: Matrix[Any, Any, Int], b: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
+    """ """
+    ...
+
+@over
+def rshift(a: Matrix[Any, Any, Int], b: Int) -> Matrix[Any, Any, Int]:
+    """ """
+    ...
+
+@over
+def rshift(a: Int, b: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
+    """ """
+    ...
+
+@over
 def invert(a: Int) -> Int:
     """ """
     ...
 
 @over
 def invert(a: Vector[Any, Int]) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
+def invert(a: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
     """ """
     ...
 

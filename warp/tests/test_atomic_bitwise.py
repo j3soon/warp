@@ -131,6 +131,64 @@ def test_atomic_bitwise_vector(test, device):
         assert_np_equal(atomic_xor_array.numpy(), expected_xor)
 
 
+mat33ui = wp.types.matrix(shape=(3, 3), dtype=wp.uint32)
+
+
+def test_atomic_bitwise_matrix(test, device):
+    @wp.kernel
+    def test_atomic_bitwise_matrix_kernel(a: wp.array(dtype=mat33ui), b: wp.array(dtype=mat33ui), op_type: int):
+        i = wp.tid()
+        word_idx = i // 32
+        bit_idx = i % 32
+        bit_mask = mat33ui(uint32(1)) << uint32(bit_idx)
+        if op_type == 0:
+            a[word_idx] &= (b[word_idx] & bit_mask) | ~bit_mask
+        elif op_type == 1:
+            a[word_idx] |= b[word_idx] & bit_mask
+        elif op_type == 2:
+            a[word_idx] ^= b[word_idx] & bit_mask
+        elif op_type == 3:
+            wp.atomic_and(a, word_idx, (b[word_idx] & bit_mask) | ~bit_mask)
+        elif op_type == 4:
+            wp.atomic_or(a, word_idx, b[word_idx] & bit_mask)
+        elif op_type == 5:
+            wp.atomic_xor(a, word_idx, b[word_idx] & bit_mask)
+
+    n = 1024
+    rng = np.random.default_rng(42)
+
+    a = rng.integers(0, np.iinfo(np.uint32).max, size=(n, 3, 3), dtype=np.uint32)
+    b = rng.integers(0, np.iinfo(np.uint32).max, size=(n, 3, 3), dtype=np.uint32)
+
+    expected_and = a & b
+    expected_or = a | b
+    expected_xor = a ^ b
+
+    with wp.ScopedDevice(device):
+        and_op_array = wp.array(a, dtype=mat33ui, device=device)
+        or_op_array = wp.array(a, dtype=mat33ui, device=device)
+        xor_op_array = wp.array(a, dtype=mat33ui, device=device)
+        atomic_and_array = wp.array(a, dtype=mat33ui, device=device)
+        atomic_or_array = wp.array(a, dtype=mat33ui, device=device)
+        atomic_xor_array = wp.array(a, dtype=mat33ui, device=device)
+
+        target_array = wp.array(b, dtype=mat33ui, device=device)
+
+        wp.launch(test_atomic_bitwise_matrix_kernel, dim=n * 32, inputs=[and_op_array, target_array, 0])
+        wp.launch(test_atomic_bitwise_matrix_kernel, dim=n * 32, inputs=[or_op_array, target_array, 1])
+        wp.launch(test_atomic_bitwise_matrix_kernel, dim=n * 32, inputs=[xor_op_array, target_array, 2])
+        wp.launch(test_atomic_bitwise_matrix_kernel, dim=n * 32, inputs=[atomic_and_array, target_array, 3])
+        wp.launch(test_atomic_bitwise_matrix_kernel, dim=n * 32, inputs=[atomic_or_array, target_array, 4])
+        wp.launch(test_atomic_bitwise_matrix_kernel, dim=n * 32, inputs=[atomic_xor_array, target_array, 5])
+
+        assert_np_equal(and_op_array.numpy(), expected_and)
+        assert_np_equal(or_op_array.numpy(), expected_or)
+        assert_np_equal(xor_op_array.numpy(), expected_xor)
+        assert_np_equal(atomic_and_array.numpy(), expected_and)
+        assert_np_equal(atomic_or_array.numpy(), expected_or)
+        assert_np_equal(atomic_xor_array.numpy(), expected_xor)
+
+
 devices = get_test_devices()
 
 
@@ -140,6 +198,7 @@ class TestAtomicBitwise(unittest.TestCase):
 
 add_function_test(TestAtomicBitwise, "test_atomic_bitwise_scalar", test_atomic_bitwise_scalar, devices=devices)
 add_function_test(TestAtomicBitwise, "test_atomic_bitwise_vector", test_atomic_bitwise_vector, devices=devices)
+add_function_test(TestAtomicBitwise, "test_atomic_bitwise_matrix", test_atomic_bitwise_matrix, devices=devices)
 
 
 if __name__ == "__main__":
