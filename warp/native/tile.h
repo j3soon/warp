@@ -2110,6 +2110,43 @@ inline CUDA_CALLABLE void adj_tile_mul(const typename Tile::Type& s, Tile& a,
 }
 
 
+// tile & tile
+template <typename TileA, typename TileB>
+inline CUDA_CALLABLE auto tile_and(TileA& a, TileB& b)
+{
+    return tile_binary_map(bit_and, a, b, a);
+}
+
+template <typename TileA, typename TileB, typename AdjTileA, typename AdjTileB, typename AdjTile>
+inline CUDA_CALLABLE void adj_tile_and(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b, AdjTile& adj_c)
+{
+}
+
+// tile | tile
+template <typename TileA, typename TileB>
+inline CUDA_CALLABLE auto tile_or(TileA& a, TileB& b)
+{
+    return tile_binary_map(bit_or, a, b, a);
+}
+
+template <typename TileA, typename TileB, typename AdjTileA, typename AdjTileB, typename AdjTile>
+inline CUDA_CALLABLE void adj_tile_or(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b, AdjTile& adj_c)
+{
+}
+
+// tile ^ tile
+template <typename TileA, typename TileB>
+inline CUDA_CALLABLE auto tile_xor(TileA& a, TileB& b)
+{
+    return tile_binary_map(bit_xor, a, b, a);
+}
+
+template <typename TileA, typename TileB, typename AdjTileA, typename AdjTileB, typename AdjTile>
+inline CUDA_CALLABLE void adj_tile_xor(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b, AdjTile& adj_c)
+{
+}
+
+
 template <typename TileA, typename TileB>
 inline CUDA_CALLABLE void tile_add_inplace(TileA& a, TileB& b)
 {
