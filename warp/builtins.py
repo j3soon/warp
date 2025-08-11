@@ -6940,39 +6940,6 @@ add_builtin(
     group="Utility",
 )
 
-# implements quaternion[idx] &= scalar
-add_builtin(
-    "bit_and_inplace",
-    input_types={"a": quaternion(dtype=Scalar), "i": Any, "value": Any},
-    value_type=None,
-    dispatch_func=vector_assign_dispatch_func,
-    hidden=True,
-    export=False,
-    group="Utility",
-)
-
-# implements transformation[idx] &= scalar
-add_builtin(
-    "bit_and_inplace",
-    input_types={"a": transformation(dtype=Float), "i": Any, "value": Any},
-    value_type=None,
-    dispatch_func=vector_assign_dispatch_func,
-    hidden=True,
-    export=False,
-    group="Utility",
-)
-
-# implements transformation.p &= vec3
-add_builtin(
-    "transform_bit_and_inplace",
-    input_types={"a": transformation(dtype=Float), "value": vector(length=3, dtype=Float)},
-    value_type=None,
-    hidden=True,
-    export=False,
-    group="Utility",
-)
-
-
 # implements vector[idx] |= scalar
 add_builtin(
     "bit_or_inplace",
@@ -6984,77 +6951,12 @@ add_builtin(
     group="Utility",
 )
 
-# implements quaternion[idx] |= scalar
-add_builtin(
-    "bit_or_inplace",
-    input_types={"a": quaternion(dtype=Scalar), "i": Any, "value": Any},
-    value_type=None,
-    dispatch_func=vector_assign_dispatch_func,
-    hidden=True,
-    export=False,
-    group="Utility",
-)
-
-# implements transformation[idx] |= scalar
-add_builtin(
-    "bit_or_inplace",
-    input_types={"a": transformation(dtype=Float), "i": Any, "value": Any},
-    value_type=None,
-    dispatch_func=vector_assign_dispatch_func,
-    hidden=True,
-    export=False,
-    group="Utility",
-)
-
-# implements transformation.p |= vec3
-add_builtin(
-    "transform_bit_or_inplace",
-    input_types={"a": transformation(dtype=Float), "value": vector(length=3, dtype=Float)},
-    value_type=None,
-    hidden=True,
-    export=False,
-    group="Utility",
-)
-
-
 # implements vector[idx] ^= scalar
 add_builtin(
     "bit_xor_inplace",
     input_types={"a": vector(length=Any, dtype=Scalar), "i": Any, "value": Any},
     value_type=None,
     dispatch_func=vector_assign_dispatch_func,
-    hidden=True,
-    export=False,
-    group="Utility",
-)
-
-# implements quaternion[idx] ^= scalar
-add_builtin(
-    "bit_xor_inplace",
-    input_types={"a": quaternion(dtype=Scalar), "i": Any, "value": Any},
-    value_type=None,
-    dispatch_func=vector_assign_dispatch_func,
-    hidden=True,
-    export=False,
-    group="Utility",
-)
-
-# implements transformation[idx] ^= scalar
-add_builtin(
-    "bit_xor_inplace",
-    input_types={"a": transformation(dtype=Float), "i": Any, "value": Any},
-    value_type=None,
-    dispatch_func=vector_assign_dispatch_func,
-    hidden=True,
-    export=False,
-    group="Utility",
-)
-
-# implements transformation.p ^= vec3
-add_builtin(
-    "transform_bit_xor_inplace",
-    input_types={"a": transformation(dtype=Float), "value": vector(length=3, dtype=Float)},
-    value_type=None,
     hidden=True,
     export=False,
     group="Utility",
