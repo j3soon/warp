@@ -1016,7 +1016,7 @@ struct tile_shared_t
     }
 
     // perform AND between a scalar value and a single tile element
-    inline CUDA_CALLABLE void and_inplace(const typename Layout::Coord& c, const Type& x)
+    inline CUDA_CALLABLE void bit_and_inplace(const typename Layout::Coord& c, const Type& x)
     {
         // since multiple threads may access the same element
         // we need to access using atomic operations
@@ -1026,11 +1026,11 @@ struct tile_shared_t
     }
 
     // backward of inplace scalar AND
-    inline CUDA_CALLABLE void adj_and_inplace(const typename Layout::Coord& c, Type& adj_x) {}
+    inline CUDA_CALLABLE void adj_bit_and_inplace(const typename Layout::Coord& c, Type& adj_x) {}
 
 
     // perform OR between a scalar value or a single tile element
-    inline CUDA_CALLABLE void or_inplace(const typename Layout::Coord& c, const Type& x)
+    inline CUDA_CALLABLE void bit_or_inplace(const typename Layout::Coord& c, const Type& x)
     {
         // since multiple threads may access the same element
         // we need to access using atomic operations
@@ -1040,10 +1040,10 @@ struct tile_shared_t
     }
 
     // backward of inplace scalar OR
-    inline CUDA_CALLABLE void adj_or_inplace(const typename Layout::Coord& c, Type& adj_x) {}
+    inline CUDA_CALLABLE void adj_bit_or_inplace(const typename Layout::Coord& c, Type& adj_x) {}
 
     // perform XOR between a scalar value xor a single tile element
-    inline CUDA_CALLABLE void xor_inplace(const typename Layout::Coord& c, const Type& x)
+    inline CUDA_CALLABLE void bit_xor_inplace(const typename Layout::Coord& c, const Type& x)
     {
         // since multiple threads may access the same element
         // we need to access using atomic operations
@@ -1053,7 +1053,7 @@ struct tile_shared_t
     }
 
     // backward of inplace scalar XOR
-    inline CUDA_CALLABLE void adj_xor_inplace(const typename Layout::Coord& c, Type& adj_x) {}
+    inline CUDA_CALLABLE void adj_bit_xor_inplace(const typename Layout::Coord& c, Type& adj_x) {}
 
     // copy register tile to shared
     template <typename Tile>
@@ -2112,37 +2112,37 @@ inline CUDA_CALLABLE void adj_tile_mul(const typename Tile::Type& s, Tile& a,
 
 // tile & tile
 template <typename TileA, typename TileB>
-inline CUDA_CALLABLE auto tile_and(TileA& a, TileB& b)
+inline CUDA_CALLABLE auto tile_bit_and(TileA& a, TileB& b)
 {
     return tile_binary_map(bit_and, a, b, a);
 }
 
 template <typename TileA, typename TileB, typename AdjTileA, typename AdjTileB, typename AdjTile>
-inline CUDA_CALLABLE void adj_tile_and(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b, AdjTile& adj_c)
+inline CUDA_CALLABLE void adj_tile_bit_and(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b, AdjTile& adj_c)
 {
 }
 
 // tile | tile
 template <typename TileA, typename TileB>
-inline CUDA_CALLABLE auto tile_or(TileA& a, TileB& b)
+inline CUDA_CALLABLE auto tile_bit_or(TileA& a, TileB& b)
 {
     return tile_binary_map(bit_or, a, b, a);
 }
 
 template <typename TileA, typename TileB, typename AdjTileA, typename AdjTileB, typename AdjTile>
-inline CUDA_CALLABLE void adj_tile_or(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b, AdjTile& adj_c)
+inline CUDA_CALLABLE void adj_tile_bit_or(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b, AdjTile& adj_c)
 {
 }
 
 // tile ^ tile
 template <typename TileA, typename TileB>
-inline CUDA_CALLABLE auto tile_xor(TileA& a, TileB& b)
+inline CUDA_CALLABLE auto tile_bit_xor(TileA& a, TileB& b)
 {
     return tile_binary_map(bit_xor, a, b, a);
 }
 
 template <typename TileA, typename TileB, typename AdjTileA, typename AdjTileB, typename AdjTile>
-inline CUDA_CALLABLE void adj_tile_xor(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b, AdjTile& adj_c)
+inline CUDA_CALLABLE void adj_tile_bit_xor(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b, AdjTile& adj_c)
 {
 }
 
@@ -2267,7 +2267,7 @@ inline CUDA_CALLABLE void adj_tile_sub_inplace(TileA& a, TileB& b, AdjTileA& adj
 }
 
 template <typename TileA, typename TileB>
-inline CUDA_CALLABLE void tile_and_inplace(TileA& a, TileB& b)
+inline CUDA_CALLABLE void tile_bit_and_inplace(TileA& a, TileB& b)
 {
     using ShapeA = typename TileA::Layout::Shape;
     using ShapeB = typename TileB::Layout::Shape;
@@ -2297,10 +2297,10 @@ inline CUDA_CALLABLE void tile_and_inplace(TileA& a, TileB& b)
 }
 
 template <typename TileA, typename TileB, typename AdjTileA, typename AdjTileB>
-inline CUDA_CALLABLE void adj_tile_and_inplace(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b) {}
+inline CUDA_CALLABLE void adj_tile_bit_and_inplace(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b) {}
 
 template <typename TileA, typename TileB>
-inline CUDA_CALLABLE void tile_or_inplace(TileA& a, TileB& b)
+inline CUDA_CALLABLE void tile_bit_or_inplace(TileA& a, TileB& b)
 {
     using ShapeA = typename TileA::Layout::Shape;
     using ShapeB = typename TileB::Layout::Shape;
@@ -2330,10 +2330,10 @@ inline CUDA_CALLABLE void tile_or_inplace(TileA& a, TileB& b)
 }
 
 template <typename TileA, typename TileB, typename AdjTileA, typename AdjTileB>
-inline CUDA_CALLABLE void adj_tile_or_inplace(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b) {}
+inline CUDA_CALLABLE void adj_tile_bit_or_inplace(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b) {}
 
 template <typename TileA, typename TileB>
-inline CUDA_CALLABLE void tile_xor_inplace(TileA& a, TileB& b)
+inline CUDA_CALLABLE void tile_bit_xor_inplace(TileA& a, TileB& b)
 {
     using ShapeA = typename TileA::Layout::Shape;
     using ShapeB = typename TileB::Layout::Shape;
@@ -2363,7 +2363,7 @@ inline CUDA_CALLABLE void tile_xor_inplace(TileA& a, TileB& b)
 }
 
 template <typename TileA, typename TileB, typename AdjTileA, typename AdjTileB>
-inline CUDA_CALLABLE void adj_tile_xor_inplace(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b) {}
+inline CUDA_CALLABLE void adj_tile_bit_xor_inplace(TileA& a, TileB& b, AdjTileA& adj_a, AdjTileB& adj_b) {}
 
 
 template<typename Tile>
@@ -2404,31 +2404,31 @@ template<typename Tile>
 void tile_sub_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value) { t.sub_inplace(tile_coord(i,j,k,l), value); }
 
 template<typename Tile>
-void tile_and_inplace(Tile& t, int i, typename Tile::Type value) { t.and_inplace(tile_coord(i), value); }
+void tile_bit_and_inplace(Tile& t, int i, typename Tile::Type value) { t.bit_and_inplace(tile_coord(i), value); }
 template<typename Tile>
-void tile_and_inplace(Tile& t, int i, int j, typename Tile::Type value) { t.and_inplace(tile_coord(i,j), value); }
+void tile_bit_and_inplace(Tile& t, int i, int j, typename Tile::Type value) { t.bit_and_inplace(tile_coord(i,j), value); }
 template<typename Tile>
-void tile_and_inplace(Tile& t, int i, int j, int k, typename Tile::Type value) { t.and_inplace(tile_coord(i,j,k), value); }
+void tile_bit_and_inplace(Tile& t, int i, int j, int k, typename Tile::Type value) { t.bit_and_inplace(tile_coord(i,j,k), value); }
 template<typename Tile>
-void tile_and_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value) { t.and_inplace(tile_coord(i,j,k,l), value); }
+void tile_bit_and_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value) { t.bit_and_inplace(tile_coord(i,j,k,l), value); }
 
 template<typename Tile>
-void tile_or_inplace(Tile& t, int i, typename Tile::Type value) { t.or_inplace(tile_coord(i), value); }
+void tile_bit_or_inplace(Tile& t, int i, typename Tile::Type value) { t.bit_or_inplace(tile_coord(i), value); }
 template<typename Tile>
-void tile_or_inplace(Tile& t, int i, int j, typename Tile::Type value) { t.or_inplace(tile_coord(i,j), value); }
+void tile_bit_or_inplace(Tile& t, int i, int j, typename Tile::Type value) { t.bit_or_inplace(tile_coord(i,j), value); }
 template<typename Tile>
-void tile_or_inplace(Tile& t, int i, int j, int k, typename Tile::Type value) { t.or_inplace(tile_coord(i,j,k), value); }
+void tile_bit_or_inplace(Tile& t, int i, int j, int k, typename Tile::Type value) { t.bit_or_inplace(tile_coord(i,j,k), value); }
 template<typename Tile>
-void tile_or_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value) { t.or_inplace(tile_coord(i,j,k,l), value); }
+void tile_bit_or_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value) { t.bit_or_inplace(tile_coord(i,j,k,l), value); }
 
 template<typename Tile>
-void tile_xor_inplace(Tile& t, int i, typename Tile::Type value) { t.xor_inplace(tile_coord(i), value); }
+void tile_bit_xor_inplace(Tile& t, int i, typename Tile::Type value) { t.bit_xor_inplace(tile_coord(i), value); }
 template<typename Tile>
-void tile_xor_inplace(Tile& t, int i, int j, typename Tile::Type value) { t.xor_inplace(tile_coord(i,j), value); }
+void tile_bit_xor_inplace(Tile& t, int i, int j, typename Tile::Type value) { t.bit_xor_inplace(tile_coord(i,j), value); }
 template<typename Tile>
-void tile_xor_inplace(Tile& t, int i, int j, int k, typename Tile::Type value) { t.xor_inplace(tile_coord(i,j,k), value); }
+void tile_bit_xor_inplace(Tile& t, int i, int j, int k, typename Tile::Type value) { t.bit_xor_inplace(tile_coord(i,j,k), value); }
 template<typename Tile>
-void tile_xor_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value) { t.xor_inplace(tile_coord(i,j,k,l), value); }
+void tile_bit_xor_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value) { t.bit_xor_inplace(tile_coord(i,j,k,l), value); }
 
 template<typename Tile, typename AdjTile>
 void adj_tile_add_inplace(Tile& t, int i, typename Tile::Type value, AdjTile& adj_t, int adj_i, typename Tile::Type& adj_value) { adj_t.adj_add_inplace(tile_coord(i), adj_value); }
@@ -2449,31 +2449,31 @@ template<typename Tile, typename AdjTile>
 void adj_tile_sub_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, int adj_k, int adj_l, typename Tile::Type& adj_value) { adj_t.adj_sub_inplace(tile_coord(i, j, k, l), adj_value); }
 
 template<typename Tile, typename AdjTile>
-void adj_tile_and_inplace(Tile& t, int i, typename Tile::Type value, AdjTile& adj_t, int adj_i, typename Tile::Type& adj_value) { adj_t.adj_and_inplace(tile_coord(i), adj_value); }
+void adj_tile_bit_and_inplace(Tile& t, int i, typename Tile::Type value, AdjTile& adj_t, int adj_i, typename Tile::Type& adj_value) { adj_t.adj_bit_and_inplace(tile_coord(i), adj_value); }
 template<typename Tile, typename AdjTile>
-void adj_tile_and_inplace(Tile& t, int i, int j, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, typename Tile::Type& adj_value) { adj_t.adj_and_inplace(tile_coord(i, j), adj_value); }
+void adj_tile_bit_and_inplace(Tile& t, int i, int j, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, typename Tile::Type& adj_value) { adj_t.adj_bit_and_inplace(tile_coord(i, j), adj_value); }
 template<typename Tile, typename AdjTile>
-void adj_tile_and_inplace(Tile& t, int i, int j, int k, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, int adj_k, typename Tile::Type& adj_value) { adj_t.adj_and_inplace(tile_coord(i, j, k), adj_value); }
+void adj_tile_bit_and_inplace(Tile& t, int i, int j, int k, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, int adj_k, typename Tile::Type& adj_value) { adj_t.adj_bit_and_inplace(tile_coord(i, j, k), adj_value); }
 template<typename Tile, typename AdjTile>
-void adj_tile_and_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, int adj_k, int adj_l, typename Tile::Type& adj_value) { adj_t.adj_and_inplace(tile_coord(i, j, k, l), adj_value); }
+void adj_tile_bit_and_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, int adj_k, int adj_l, typename Tile::Type& adj_value) { adj_t.adj_bit_and_inplace(tile_coord(i, j, k, l), adj_value); }
 
 template<typename Tile, typename AdjTile>
-void adj_tile_or_inplace(Tile& t, int i, typename Tile::Type value, AdjTile& adj_t, int adj_i, typename Tile::Type& adj_value) { adj_t.adj_or_inplace(tile_coord(i), adj_value); }
+void adj_tile_bit_or_inplace(Tile& t, int i, typename Tile::Type value, AdjTile& adj_t, int adj_i, typename Tile::Type& adj_value) { adj_t.adj_bit_or_inplace(tile_coord(i), adj_value); }
 template<typename Tile, typename AdjTile>
-void adj_tile_or_inplace(Tile& t, int i, int j, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, typename Tile::Type& adj_value) { adj_t.adj_or_inplace(tile_coord(i, j), adj_value); }
+void adj_tile_bit_or_inplace(Tile& t, int i, int j, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, typename Tile::Type& adj_value) { adj_t.adj_bit_or_inplace(tile_coord(i, j), adj_value); }
 template<typename Tile, typename AdjTile>
-void adj_tile_or_inplace(Tile& t, int i, int j, int k, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, int adj_k, typename Tile::Type& adj_value) { adj_t.adj_or_inplace(tile_coord(i, j, k), adj_value); }
+void adj_tile_bit_or_inplace(Tile& t, int i, int j, int k, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, int adj_k, typename Tile::Type& adj_value) { adj_t.adj_bit_or_inplace(tile_coord(i, j, k), adj_value); }
 template<typename Tile, typename AdjTile>
-void adj_tile_or_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, int adj_k, int adj_l, typename Tile::Type& adj_value) { adj_t.adj_or_inplace(tile_coord(i, j, k, l), adj_value); }
+void adj_tile_bit_or_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, int adj_k, int adj_l, typename Tile::Type& adj_value) { adj_t.adj_bit_or_inplace(tile_coord(i, j, k, l), adj_value); }
 
 template<typename Tile, typename AdjTile>
-void adj_tile_xor_inplace(Tile& t, int i, typename Tile::Type value, AdjTile& adj_t, int adj_i, typename Tile::Type& adj_value) { adj_t.adj_xor_inplace(tile_coord(i), adj_value); }
+void adj_tile_bit_xor_inplace(Tile& t, int i, typename Tile::Type value, AdjTile& adj_t, int adj_i, typename Tile::Type& adj_value) { adj_t.adj_bit_xor_inplace(tile_coord(i), adj_value); }
 template<typename Tile, typename AdjTile>
-void adj_tile_xor_inplace(Tile& t, int i, int j, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, typename Tile::Type& adj_value) { adj_t.adj_xor_inplace(tile_coord(i, j), adj_value); }
+void adj_tile_bit_xor_inplace(Tile& t, int i, int j, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, typename Tile::Type& adj_value) { adj_t.adj_bit_xor_inplace(tile_coord(i, j), adj_value); }
 template<typename Tile, typename AdjTile>
-void adj_tile_xor_inplace(Tile& t, int i, int j, int k, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, int adj_k, typename Tile::Type& adj_value) { adj_t.adj_xor_inplace(tile_coord(i, j, k), adj_value); }
+void adj_tile_bit_xor_inplace(Tile& t, int i, int j, int k, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, int adj_k, typename Tile::Type& adj_value) { adj_t.adj_bit_xor_inplace(tile_coord(i, j, k), adj_value); }
 template<typename Tile, typename AdjTile>
-void adj_tile_xor_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, int adj_k, int adj_l, typename Tile::Type& adj_value) { adj_t.adj_xor_inplace(tile_coord(i, j, k, l), adj_value); }
+void adj_tile_bit_xor_inplace(Tile& t, int i, int j, int k, int l, typename Tile::Type value, AdjTile& adj_t, int adj_i, int adj_j, int adj_k, int adj_l, typename Tile::Type& adj_value) { adj_t.adj_bit_xor_inplace(tile_coord(i, j, k, l), adj_value); }
 
 namespace partitioned_gemm
 {

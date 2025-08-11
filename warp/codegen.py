@@ -2937,11 +2937,11 @@ class Adjoint:
                 elif isinstance(node.op, ast.Sub):
                     adj.add_builtin_call("sub_inplace", [target, *indices, rhs])
                 elif isinstance(node.op, ast.BitAnd):
-                    adj.add_builtin_call("and_inplace", [target, *indices, rhs])
+                    adj.add_builtin_call("bit_and_inplace", [target, *indices, rhs])
                 elif isinstance(node.op, ast.BitOr):
-                    adj.add_builtin_call("or_inplace", [target, *indices, rhs])
+                    adj.add_builtin_call("bit_or_inplace", [target, *indices, rhs])
                 elif isinstance(node.op, ast.BitXor):
-                    adj.add_builtin_call("xor_inplace", [target, *indices, rhs])
+                    adj.add_builtin_call("bit_xor_inplace", [target, *indices, rhs])
                 else:
                     if warp.config.verbose:
                         print(f"Warning: in-place op {node.op} is not differentiable")
@@ -2954,11 +2954,11 @@ class Adjoint:
                 elif isinstance(node.op, ast.Sub):
                     adj.add_builtin_call("tile_sub_inplace", [target, *indices, rhs])
                 elif isinstance(node.op, ast.BitAnd):
-                    adj.add_builtin_call("tile_and_inplace", [target, *indices, rhs])
+                    adj.add_builtin_call("tile_bit_and_inplace", [target, *indices, rhs])
                 elif isinstance(node.op, ast.BitOr):
-                    adj.add_builtin_call("tile_or_inplace", [target, *indices, rhs])
+                    adj.add_builtin_call("tile_bit_or_inplace", [target, *indices, rhs])
                 elif isinstance(node.op, ast.BitXor):
-                    adj.add_builtin_call("tile_xor_inplace", [target, *indices, rhs])
+                    adj.add_builtin_call("tile_bit_xor_inplace", [target, *indices, rhs])
                 else:
                     if warp.config.verbose:
                         print(f"Warning: in-place op {node.op} is not differentiable")
@@ -2978,11 +2978,11 @@ class Adjoint:
                 elif isinstance(node.op, ast.Sub):
                     adj.add_builtin_call("sub_inplace", [target, rhs])
                 elif isinstance(node.op, ast.BitAnd):
-                    adj.add_builtin_call("and_inplace", [target, rhs])
+                    adj.add_builtin_call("bit_and_inplace", [target, rhs])
                 elif isinstance(node.op, ast.BitOr):
-                    adj.add_builtin_call("or_inplace", [target, rhs])
+                    adj.add_builtin_call("bit_or_inplace", [target, rhs])
                 elif isinstance(node.op, ast.BitXor):
-                    adj.add_builtin_call("xor_inplace", [target, rhs])
+                    adj.add_builtin_call("bit_xor_inplace", [target, rhs])
                 else:
                     make_new_assign_statement()
                     return

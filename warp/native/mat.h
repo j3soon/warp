@@ -2137,7 +2137,7 @@ inline CUDA_CALLABLE void adj_sub_inplace(
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, int row, int col, Type value)
+inline CUDA_CALLABLE void bit_and_inplace(mat_t<Rows,Cols,Type>& m, int row, int col, Type value)
 {
 #ifndef NDEBUG
     if (row < -(int)Rows || row >= (int)Rows)
@@ -2166,7 +2166,7 @@ inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, int row, int col
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, int row, vec_t<Cols,Type>& value)
+inline CUDA_CALLABLE void bit_and_inplace(mat_t<Rows,Cols,Type>& m, int row, vec_t<Cols,Type>& value)
 {
 #ifndef NDEBUG
     if (row < -(int)Rows || row >= (int)Rows)
@@ -2189,7 +2189,7 @@ inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, int row, vec_t<C
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, Type value)
+inline CUDA_CALLABLE void bit_and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, Type value)
 {
     assert(row_slice.start >= 0 && row_slice.start <= (int)Rows);
     assert(row_slice.stop >= -1 && row_slice.stop <= (int)Rows);
@@ -2212,7 +2212,7 @@ inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slic
 
 
 template<unsigned RowSliceLength, unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value)
+inline CUDA_CALLABLE void bit_and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value)
 {
     static_assert(
         RowSliceLength == 0 ? ColSliceLength == 0 : ColSliceLength == Cols,
@@ -2246,7 +2246,7 @@ inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slic
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, Type value)
+inline CUDA_CALLABLE void bit_and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, Type value)
 {
 #ifndef NDEBUG
     if (col < -(int)Cols || col >= (int)Cols)
@@ -2279,7 +2279,7 @@ inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slic
 
 
 template<unsigned RowSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, vec_t<RowSliceLength, Type>& value)
+inline CUDA_CALLABLE void bit_and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, vec_t<RowSliceLength, Type>& value)
 {
 #ifndef NDEBUG
     if (col < -(int)Cols || col >= (int)Cols)
@@ -2317,7 +2317,7 @@ inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slic
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, Type value)
+inline CUDA_CALLABLE void bit_and_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, Type value)
 {
 #ifndef NDEBUG
     if (row < -(int)Rows || row >= (int)Rows)
@@ -2350,7 +2350,7 @@ inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t
 
 
 template<unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, vec_t<ColSliceLength, Type>& value)
+inline CUDA_CALLABLE void bit_and_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, vec_t<ColSliceLength, Type>& value)
 {
 #ifndef NDEBUG
     if (row < -(int)Rows || row >= (int)Rows)
@@ -2388,7 +2388,7 @@ inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, Type value)
+inline CUDA_CALLABLE void bit_and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, Type value)
 {
     assert(row_slice.start >= 0 && row_slice.start <= (int)Rows);
     assert(row_slice.stop >= -1 && row_slice.stop <= (int)Rows);
@@ -2420,7 +2420,7 @@ inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slic
 
 
 template<unsigned RowSliceLength, unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value)
+inline CUDA_CALLABLE void bit_and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value)
 {
     assert(row_slice.start >= 0 && row_slice.start <= (int)Rows);
     assert(row_slice.stop >= -1 && row_slice.stop <= (int)Rows);
@@ -2462,70 +2462,70 @@ inline CUDA_CALLABLE void and_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slic
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_and_inplace(
+inline CUDA_CALLABLE void adj_bit_and_inplace(
     mat_t<Rows,Cols,Type>& m, int row, int col, Type value,
     mat_t<Rows,Cols,Type>& adj_m, int adj_row, int adj_col, Type& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_and_inplace(
+inline CUDA_CALLABLE void adj_bit_and_inplace(
     mat_t<Rows,Cols,Type>& m, int row, vec_t<Cols,Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, int adj_row, vec_t<Cols,Type>& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_and_inplace(
+inline CUDA_CALLABLE void adj_bit_and_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, Type value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, Type& adj_value
 ) {}
 
 
 template<unsigned RowSliceLength, unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_and_inplace(
+inline CUDA_CALLABLE void adj_bit_and_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, mat_t<RowSliceLength, ColSliceLength, Type>& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_and_inplace(
+inline CUDA_CALLABLE void adj_bit_and_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, Type value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, int& adj_col, Type& adj_value
 ) {}
 
 
 template<unsigned RowSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_and_inplace(
+inline CUDA_CALLABLE void adj_bit_and_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, vec_t<RowSliceLength, Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, int& adj_col, vec_t<RowSliceLength, Type>& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_and_inplace(
+inline CUDA_CALLABLE void adj_bit_and_inplace(
     mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, Type value,
     mat_t<Rows,Cols,Type>& adj_m, int& adj_row, slice_t& adj_col_slice, Type& adj_value
 ) {}
 
 
 template<unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_and_inplace(
+inline CUDA_CALLABLE void adj_bit_and_inplace(
     mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, vec_t<ColSliceLength, Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, int& adj_row, slice_t& adj_col_slice, vec_t<ColSliceLength, Type>& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_and_inplace(
+inline CUDA_CALLABLE void adj_bit_and_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, Type value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, slice_t& adj_col_slice, Type& adj_value
 ) {}
 
 
 template<unsigned RowSliceLength, unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_and_inplace(
+inline CUDA_CALLABLE void adj_bit_and_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, slice_t& adj_col_slice, mat_t<RowSliceLength, ColSliceLength, Type>& adj_value
 ) {}
@@ -2533,7 +2533,7 @@ inline CUDA_CALLABLE void adj_and_inplace(
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, int row, int col, Type value)
+inline CUDA_CALLABLE void bit_or_inplace(mat_t<Rows,Cols,Type>& m, int row, int col, Type value)
 {
 #ifndef NDEBUG
     if (row < -(int)Rows || row >= (int)Rows)
@@ -2562,7 +2562,7 @@ inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, int row, int col,
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, int row, vec_t<Cols,Type>& value)
+inline CUDA_CALLABLE void bit_or_inplace(mat_t<Rows,Cols,Type>& m, int row, vec_t<Cols,Type>& value)
 {
 #ifndef NDEBUG
     if (row < -(int)Rows || row >= (int)Rows)
@@ -2585,7 +2585,7 @@ inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, int row, vec_t<Co
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, Type value)
+inline CUDA_CALLABLE void bit_or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, Type value)
 {
     assert(row_slice.start >= 0 && row_slice.start <= (int)Rows);
     assert(row_slice.stop >= -1 && row_slice.stop <= (int)Rows);
@@ -2608,7 +2608,7 @@ inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice
 
 
 template<unsigned RowSliceLength, unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value)
+inline CUDA_CALLABLE void bit_or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value)
 {
     static_assert(
         RowSliceLength == 0 ? ColSliceLength == 0 : ColSliceLength == Cols,
@@ -2642,7 +2642,7 @@ inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, Type value)
+inline CUDA_CALLABLE void bit_or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, Type value)
 {
 #ifndef NDEBUG
     if (col < -(int)Cols || col >= (int)Cols)
@@ -2675,7 +2675,7 @@ inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice
 
 
 template<unsigned RowSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, vec_t<RowSliceLength, Type>& value)
+inline CUDA_CALLABLE void bit_or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, vec_t<RowSliceLength, Type>& value)
 {
 #ifndef NDEBUG
     if (col < -(int)Cols || col >= (int)Cols)
@@ -2713,7 +2713,7 @@ inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, Type value)
+inline CUDA_CALLABLE void bit_or_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, Type value)
 {
 #ifndef NDEBUG
     if (row < -(int)Rows || row >= (int)Rows)
@@ -2746,7 +2746,7 @@ inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t 
 
 
 template<unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, vec_t<ColSliceLength, Type>& value)
+inline CUDA_CALLABLE void bit_or_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, vec_t<ColSliceLength, Type>& value)
 {
 #ifndef NDEBUG
     if (row < -(int)Rows || row >= (int)Rows)
@@ -2784,7 +2784,7 @@ inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t 
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, Type value)
+inline CUDA_CALLABLE void bit_or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, Type value)
 {
     assert(row_slice.start >= 0 && row_slice.start <= (int)Rows);
     assert(row_slice.stop >= -1 && row_slice.stop <= (int)Rows);
@@ -2816,7 +2816,7 @@ inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice
 
 
 template<unsigned RowSliceLength, unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value)
+inline CUDA_CALLABLE void bit_or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value)
 {
     assert(row_slice.start >= 0 && row_slice.start <= (int)Rows);
     assert(row_slice.stop >= -1 && row_slice.stop <= (int)Rows);
@@ -2858,70 +2858,70 @@ inline CUDA_CALLABLE void or_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_or_inplace(
+inline CUDA_CALLABLE void adj_bit_or_inplace(
     mat_t<Rows,Cols,Type>& m, int row, int col, Type value,
     mat_t<Rows,Cols,Type>& adj_m, int adj_row, int adj_col, Type& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_or_inplace(
+inline CUDA_CALLABLE void adj_bit_or_inplace(
     mat_t<Rows,Cols,Type>& m, int row, vec_t<Cols,Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, int adj_row, vec_t<Cols,Type>& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_or_inplace(
+inline CUDA_CALLABLE void adj_bit_or_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, Type value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, Type& adj_value
 ) {}
 
 
 template<unsigned RowSliceLength, unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_or_inplace(
+inline CUDA_CALLABLE void adj_bit_or_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, mat_t<RowSliceLength, ColSliceLength, Type>& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_or_inplace(
+inline CUDA_CALLABLE void adj_bit_or_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, Type value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, int& adj_col, Type& adj_value
 ) {}
 
 
 template<unsigned RowSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_or_inplace(
+inline CUDA_CALLABLE void adj_bit_or_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, vec_t<RowSliceLength, Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, int& adj_col, vec_t<RowSliceLength, Type>& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_or_inplace(
+inline CUDA_CALLABLE void adj_bit_or_inplace(
     mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, Type value,
     mat_t<Rows,Cols,Type>& adj_m, int& adj_row, slice_t& adj_col_slice, Type& adj_value
 ) {}
 
 
 template<unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_or_inplace(
+inline CUDA_CALLABLE void adj_bit_or_inplace(
     mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, vec_t<ColSliceLength, Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, int& adj_row, slice_t& adj_col_slice, vec_t<ColSliceLength, Type>& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_or_inplace(
+inline CUDA_CALLABLE void adj_bit_or_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, Type value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, slice_t& adj_col_slice, Type& adj_value
 ) {}
 
 
 template<unsigned RowSliceLength, unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_or_inplace(
+inline CUDA_CALLABLE void adj_bit_or_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, slice_t& adj_col_slice, mat_t<RowSliceLength, ColSliceLength, Type>& adj_value
 ) {}
@@ -2929,7 +2929,7 @@ inline CUDA_CALLABLE void adj_or_inplace(
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, int row, int col, Type value)
+inline CUDA_CALLABLE void bit_xor_inplace(mat_t<Rows,Cols,Type>& m, int row, int col, Type value)
 {
 #ifndef NDEBUG
     if (row < -(int)Rows || row >= (int)Rows)
@@ -2958,7 +2958,7 @@ inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, int row, int col
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, int row, vec_t<Cols,Type>& value)
+inline CUDA_CALLABLE void bit_xor_inplace(mat_t<Rows,Cols,Type>& m, int row, vec_t<Cols,Type>& value)
 {
 #ifndef NDEBUG
     if (row < -(int)Rows || row >= (int)Rows)
@@ -2981,7 +2981,7 @@ inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, int row, vec_t<C
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, Type value)
+inline CUDA_CALLABLE void bit_xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, Type value)
 {
     assert(row_slice.start >= 0 && row_slice.start <= (int)Rows);
     assert(row_slice.stop >= -1 && row_slice.stop <= (int)Rows);
@@ -3004,7 +3004,7 @@ inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slic
 
 
 template<unsigned RowSliceLength, unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value)
+inline CUDA_CALLABLE void bit_xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value)
 {
     static_assert(
         RowSliceLength == 0 ? ColSliceLength == 0 : ColSliceLength == Cols,
@@ -3038,7 +3038,7 @@ inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slic
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, Type value)
+inline CUDA_CALLABLE void bit_xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, Type value)
 {
 #ifndef NDEBUG
     if (col < -(int)Cols || col >= (int)Cols)
@@ -3071,7 +3071,7 @@ inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slic
 
 
 template<unsigned RowSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, vec_t<RowSliceLength, Type>& value)
+inline CUDA_CALLABLE void bit_xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, vec_t<RowSliceLength, Type>& value)
 {
 #ifndef NDEBUG
     if (col < -(int)Cols || col >= (int)Cols)
@@ -3109,7 +3109,7 @@ inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slic
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, Type value)
+inline CUDA_CALLABLE void bit_xor_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, Type value)
 {
 #ifndef NDEBUG
     if (row < -(int)Rows || row >= (int)Rows)
@@ -3142,7 +3142,7 @@ inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t
 
 
 template<unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, vec_t<ColSliceLength, Type>& value)
+inline CUDA_CALLABLE void bit_xor_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, vec_t<ColSliceLength, Type>& value)
 {
 #ifndef NDEBUG
     if (row < -(int)Rows || row >= (int)Rows)
@@ -3180,7 +3180,7 @@ inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, int row, slice_t
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, Type value)
+inline CUDA_CALLABLE void bit_xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, Type value)
 {
     assert(row_slice.start >= 0 && row_slice.start <= (int)Rows);
     assert(row_slice.stop >= -1 && row_slice.stop <= (int)Rows);
@@ -3212,7 +3212,7 @@ inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slic
 
 
 template<unsigned RowSliceLength, unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value)
+inline CUDA_CALLABLE void bit_xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value)
 {
     assert(row_slice.start >= 0 && row_slice.start <= (int)Rows);
     assert(row_slice.stop >= -1 && row_slice.stop <= (int)Rows);
@@ -3254,70 +3254,70 @@ inline CUDA_CALLABLE void xor_inplace(mat_t<Rows,Cols,Type>& m, slice_t row_slic
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_xor_inplace(
+inline CUDA_CALLABLE void adj_bit_xor_inplace(
     mat_t<Rows,Cols,Type>& m, int row, int col, Type value,
     mat_t<Rows,Cols,Type>& adj_m, int adj_row, int adj_col, Type& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_xor_inplace(
+inline CUDA_CALLABLE void adj_bit_xor_inplace(
     mat_t<Rows,Cols,Type>& m, int row, vec_t<Cols,Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, int adj_row, vec_t<Cols,Type>& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_xor_inplace(
+inline CUDA_CALLABLE void adj_bit_xor_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, Type value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, Type& adj_value
 ) {}
 
 
 template<unsigned RowSliceLength, unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_xor_inplace(
+inline CUDA_CALLABLE void adj_bit_xor_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, mat_t<RowSliceLength, ColSliceLength, Type>& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_xor_inplace(
+inline CUDA_CALLABLE void adj_bit_xor_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, Type value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, int& adj_col, Type& adj_value
 ) {}
 
 
 template<unsigned RowSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_xor_inplace(
+inline CUDA_CALLABLE void adj_bit_xor_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, int col, vec_t<RowSliceLength, Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, int& adj_col, vec_t<RowSliceLength, Type>& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_xor_inplace(
+inline CUDA_CALLABLE void adj_bit_xor_inplace(
     mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, Type value,
     mat_t<Rows,Cols,Type>& adj_m, int& adj_row, slice_t& adj_col_slice, Type& adj_value
 ) {}
 
 
 template<unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_xor_inplace(
+inline CUDA_CALLABLE void adj_bit_xor_inplace(
     mat_t<Rows,Cols,Type>& m, int row, slice_t col_slice, vec_t<ColSliceLength, Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, int& adj_row, slice_t& adj_col_slice, vec_t<ColSliceLength, Type>& adj_value
 ) {}
 
 
 template<unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_xor_inplace(
+inline CUDA_CALLABLE void adj_bit_xor_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, Type value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, slice_t& adj_col_slice, Type& adj_value
 ) {}
 
 
 template<unsigned RowSliceLength, unsigned ColSliceLength, unsigned Rows, unsigned Cols, typename Type>
-inline CUDA_CALLABLE void adj_xor_inplace(
+inline CUDA_CALLABLE void adj_bit_xor_inplace(
     mat_t<Rows,Cols,Type>& m, slice_t row_slice, slice_t col_slice, mat_t<RowSliceLength, ColSliceLength, Type>& value,
     mat_t<Rows,Cols,Type>& adj_m, slice_t& adj_row_slice, slice_t& adj_col_slice, mat_t<RowSliceLength, ColSliceLength, Type>& adj_value
 ) {}

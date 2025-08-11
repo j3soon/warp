@@ -1121,7 +1121,7 @@ inline CUDA_CALLABLE void adj_sub_inplace(
 
 
 template<unsigned Length, typename Type>
-inline CUDA_CALLABLE void and_inplace(vec_t<Length, Type>& v, int idx, Type value)
+inline CUDA_CALLABLE void bit_and_inplace(vec_t<Length, Type>& v, int idx, Type value)
 {
 #ifndef NDEBUG
     if (idx < -(int)Length || idx >= (int)Length)
@@ -1141,7 +1141,7 @@ inline CUDA_CALLABLE void and_inplace(vec_t<Length, Type>& v, int idx, Type valu
 
 
 template<unsigned Length, typename Type>
-inline CUDA_CALLABLE void and_inplace(vec_t<Length, Type>& v, slice_t slice, Type value)
+inline CUDA_CALLABLE void bit_and_inplace(vec_t<Length, Type>& v, slice_t slice, Type value)
 {
     assert(slice.start >= 0 && slice.start <= (int)Length);
     assert(slice.stop >= -1 && slice.stop <= (int)Length);
@@ -1161,7 +1161,7 @@ inline CUDA_CALLABLE void and_inplace(vec_t<Length, Type>& v, slice_t slice, Typ
 
 
 template<unsigned SliceLength, unsigned Length, typename Type>
-inline CUDA_CALLABLE void and_inplace(vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a)
+inline CUDA_CALLABLE void bit_and_inplace(vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a)
 {
     assert(slice.start >= 0 && slice.start <= (int)Length);
     assert(slice.stop >= -1 && slice.stop <= (int)Length);
@@ -1186,28 +1186,28 @@ inline CUDA_CALLABLE void and_inplace(vec_t<Length, Type>& v, slice_t slice, con
 
 
 template<unsigned Length, typename Type>
-inline CUDA_CALLABLE void adj_and_inplace(
+inline CUDA_CALLABLE void adj_bit_and_inplace(
     vec_t<Length, Type>& v, int idx, Type value,
     vec_t<Length, Type>& adj_v, int adj_idx, Type& adj_value
 ) {}
 
 
 template<unsigned Length, typename Type>
-inline CUDA_CALLABLE void adj_and_inplace(
+inline CUDA_CALLABLE void adj_bit_and_inplace(
     const vec_t<Length, Type>& v, slice_t slice, Type value,
     vec_t<Length, Type>& adj_v, slice_t& adj_slice, Type& adj_value
 ) {}
 
 
 template<unsigned SliceLength, unsigned Length, typename Type>
-inline CUDA_CALLABLE void adj_and_inplace(
+inline CUDA_CALLABLE void adj_bit_and_inplace(
     const vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a,
     vec_t<Length, Type>& adj_v, slice_t& adj_slice, vec_t<SliceLength, Type>& adj_a
 ) {}
 
 
 template<unsigned Length, typename Type>
-inline CUDA_CALLABLE void or_inplace(vec_t<Length, Type>& v, int idx, Type value)
+inline CUDA_CALLABLE void bit_or_inplace(vec_t<Length, Type>& v, int idx, Type value)
 {
 #ifndef NDEBUG
     if (idx < -(int)Length || idx >= (int)Length)
@@ -1227,7 +1227,7 @@ inline CUDA_CALLABLE void or_inplace(vec_t<Length, Type>& v, int idx, Type value
 
 
 template<unsigned Length, typename Type>
-inline CUDA_CALLABLE void or_inplace(vec_t<Length, Type>& v, slice_t slice, Type value)
+inline CUDA_CALLABLE void bit_or_inplace(vec_t<Length, Type>& v, slice_t slice, Type value)
 {
     assert(slice.start >= 0 && slice.start <= (int)Length);
     assert(slice.stop >= -1 && slice.stop <= (int)Length);
@@ -1247,7 +1247,7 @@ inline CUDA_CALLABLE void or_inplace(vec_t<Length, Type>& v, slice_t slice, Type
 
 
 template<unsigned SliceLength, unsigned Length, typename Type>
-inline CUDA_CALLABLE void or_inplace(vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a)
+inline CUDA_CALLABLE void bit_or_inplace(vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a)
 {
     assert(slice.start >= 0 && slice.start <= (int)Length);
     assert(slice.stop >= -1 && slice.stop <= (int)Length);
@@ -1272,28 +1272,28 @@ inline CUDA_CALLABLE void or_inplace(vec_t<Length, Type>& v, slice_t slice, cons
 
 
 template<unsigned Length, typename Type>
-inline CUDA_CALLABLE void adj_or_inplace(
+inline CUDA_CALLABLE void adj_bit_or_inplace(
     vec_t<Length, Type>& v, int idx, Type value,
     vec_t<Length, Type>& adj_v, int adj_idx, Type& adj_value
 ) {}
 
 
 template<unsigned Length, typename Type>
-inline CUDA_CALLABLE void adj_or_inplace(
+inline CUDA_CALLABLE void adj_bit_or_inplace(
     const vec_t<Length, Type>& v, slice_t slice, Type value,
     vec_t<Length, Type>& adj_v, slice_t& adj_slice, Type& adj_value
 ) {}
 
 
 template<unsigned SliceLength, unsigned Length, typename Type>
-inline CUDA_CALLABLE void adj_or_inplace(
+inline CUDA_CALLABLE void adj_bit_or_inplace(
     const vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a,
     vec_t<Length, Type>& adj_v, slice_t& adj_slice, vec_t<SliceLength, Type>& adj_a
 ) {}
 
 
 template<unsigned Length, typename Type>
-inline CUDA_CALLABLE void xor_inplace(vec_t<Length, Type>& v, int idx, Type value)
+inline CUDA_CALLABLE void bit_xor_inplace(vec_t<Length, Type>& v, int idx, Type value)
 {
 #ifndef NDEBUG
     if (idx < -(int)Length || idx >= (int)Length)
@@ -1313,7 +1313,7 @@ inline CUDA_CALLABLE void xor_inplace(vec_t<Length, Type>& v, int idx, Type valu
 
 
 template<unsigned Length, typename Type>
-inline CUDA_CALLABLE void xor_inplace(vec_t<Length, Type>& v, slice_t slice, Type value)
+inline CUDA_CALLABLE void bit_xor_inplace(vec_t<Length, Type>& v, slice_t slice, Type value)
 {
     assert(slice.start >= 0 && slice.start <= (int)Length);
     assert(slice.stop >= -1 && slice.stop <= (int)Length);
@@ -1333,7 +1333,7 @@ inline CUDA_CALLABLE void xor_inplace(vec_t<Length, Type>& v, slice_t slice, Typ
 
 
 template<unsigned SliceLength, unsigned Length, typename Type>
-inline CUDA_CALLABLE void xor_inplace(vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a)
+inline CUDA_CALLABLE void bit_xor_inplace(vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a)
 {
     assert(slice.start >= 0 && slice.start <= (int)Length);
     assert(slice.stop >= -1 && slice.stop <= (int)Length);
@@ -1358,21 +1358,21 @@ inline CUDA_CALLABLE void xor_inplace(vec_t<Length, Type>& v, slice_t slice, con
 
 
 template<unsigned Length, typename Type>
-inline CUDA_CALLABLE void adj_xor_inplace(
+inline CUDA_CALLABLE void adj_bit_xor_inplace(
     vec_t<Length, Type>& v, int idx, Type value,
     vec_t<Length, Type>& adj_v, int adj_idx, Type& adj_value
 ) {}
 
 
 template<unsigned Length, typename Type>
-inline CUDA_CALLABLE void adj_xor_inplace(
+inline CUDA_CALLABLE void adj_bit_xor_inplace(
     const vec_t<Length, Type>& v, slice_t slice, Type value,
     vec_t<Length, Type>& adj_v, slice_t& adj_slice, Type& adj_value
 ) {}
 
 
 template<unsigned SliceLength, unsigned Length, typename Type>
-inline CUDA_CALLABLE void adj_xor_inplace(
+inline CUDA_CALLABLE void adj_bit_xor_inplace(
     const vec_t<Length, Type>& v, slice_t slice, const vec_t<SliceLength, Type> &a,
     vec_t<Length, Type>& adj_v, slice_t& adj_slice, vec_t<SliceLength, Type>& adj_a
 ) {}
