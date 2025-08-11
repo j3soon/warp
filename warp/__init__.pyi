@@ -3158,7 +3158,37 @@ def bit_and(a: Int, b: Int) -> Int:
     ...
 
 @over
+def bit_and(a: Vector[Any, Int], b: Vector[Any, Int]) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
+def bit_and(a: Vector[Any, Int], b: Int) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
+def bit_and(a: Int, b: Vector[Any, Int]) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
 def bit_or(a: Int, b: Int) -> Int:
+    """ """
+    ...
+
+@over
+def bit_or(a: Vector[Any, Int], b: Vector[Any, Int]) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
+def bit_or(a: Vector[Any, Int], b: Int) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
+def bit_or(a: Int, b: Vector[Any, Int]) -> Vector[Any, Int]:
     """ """
     ...
 
@@ -3168,7 +3198,37 @@ def bit_xor(a: Int, b: Int) -> Int:
     ...
 
 @over
+def bit_xor(a: Vector[Any, Int], b: Vector[Any, Int]) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
+def bit_xor(a: Vector[Any, Int], b: Int) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
+def bit_xor(a: Int, b: Vector[Any, Int]) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
 def lshift(a: Int, b: Int) -> Int:
+    """ """
+    ...
+
+@over
+def lshift(a: Vector[Any, Int], b: Vector[Any, Int]) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
+def lshift(a: Vector[Any, Int], b: Int) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
+def lshift(a: Int, b: Vector[Any, Int]) -> Vector[Any, Int]:
     """ """
     ...
 
@@ -3178,7 +3238,27 @@ def rshift(a: Int, b: Int) -> Int:
     ...
 
 @over
+def rshift(a: Vector[Any, Int], b: Vector[Any, Int]) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
+def rshift(a: Vector[Any, Int], b: Int) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
+def rshift(a: Int, b: Vector[Any, Int]) -> Vector[Any, Int]:
+    """ """
+    ...
+
+@over
 def invert(a: Int) -> Int:
+    """ """
+    ...
+
+@over
+def invert(a: Vector[Any, Int]) -> Vector[Any, Int]:
     """ """
     ...
 

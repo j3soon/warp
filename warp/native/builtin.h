@@ -1158,10 +1158,28 @@ template <typename T>
 CUDA_CALLABLE inline T& operator -= (T& a, const T& b) { a = sub(a, b); return a; }
 
 template <typename T>
+CUDA_CALLABLE inline T& operator &= (T& a, const T& b) { a = bit_and(a, b); return a; }
+
+template <typename T>
+CUDA_CALLABLE inline T& operator |= (T& a, const T& b) { a = bit_or(a, b); return a; }
+
+template <typename T>
+CUDA_CALLABLE inline T& operator ^= (T& a, const T& b) { a = bit_xor(a, b); return a; }
+
+template <typename T>
 CUDA_CALLABLE inline T operator+(const T& a, const T& b) { return add(a, b); }
 
 template <typename T>
 CUDA_CALLABLE inline T operator-(const T& a, const T& b) { return sub(a, b); }
+
+template <typename T>
+CUDA_CALLABLE inline T operator&(const T& a, const T& b) { return bit_and(a, b); }
+
+template <typename T>
+CUDA_CALLABLE inline T operator|(const T& a, const T& b) { return bit_or(a, b); }
+
+template <typename T>
+CUDA_CALLABLE inline T operator^(const T& a, const T& b) { return bit_xor(a, b); }
 
 template <typename T>
 CUDA_CALLABLE inline T pos(const T& x) { return x; }

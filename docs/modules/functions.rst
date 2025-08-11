@@ -5924,66 +5924,6 @@ Other
     Search a sorted array ``arr`` in the range [arr_begin, arr_end) for the closest element greater than or equal to ``value``.
 
 
-.. py:function:: bit_and(a: Int, b: Int) -> Int
-
-    .. hlist::
-       :columns: 8
-
-       * Kernel
-       * Python
-       * Differentiable
-
-
-.. py:function:: bit_or(a: Int, b: Int) -> Int
-
-    .. hlist::
-       :columns: 8
-
-       * Kernel
-       * Python
-       * Differentiable
-
-
-.. py:function:: bit_xor(a: Int, b: Int) -> Int
-
-    .. hlist::
-       :columns: 8
-
-       * Kernel
-       * Python
-       * Differentiable
-
-
-.. py:function:: lshift(a: Int, b: Int) -> Int
-
-    .. hlist::
-       :columns: 8
-
-       * Kernel
-       * Python
-       * Differentiable
-
-
-.. py:function:: rshift(a: Int, b: Int) -> Int
-
-    .. hlist::
-       :columns: 8
-
-       * Kernel
-       * Python
-       * Differentiable
-
-
-.. py:function:: invert(a: Int) -> Int
-
-    .. hlist::
-       :columns: 8
-
-       * Kernel
-       * Python
-       * Differentiable
-
-
 
 
 Operators
@@ -6226,6 +6166,258 @@ Operators
        * Differentiable
 
     Subtract each element b from a
+
+
+.. py:function:: bit_and(a: Int, b: Int) -> Int
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: bit_and(a: Vector[Any,Int], b: Vector[Any,Int]) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: bit_and(a: Vector[Any,Int], b: Int) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: bit_and(a: Int, b: Vector[Any,Int]) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: bit_or(a: Int, b: Int) -> Int
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: bit_or(a: Vector[Any,Int], b: Vector[Any,Int]) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: bit_or(a: Vector[Any,Int], b: Int) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: bit_or(a: Int, b: Vector[Any,Int]) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: bit_xor(a: Int, b: Int) -> Int
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: bit_xor(a: Vector[Any,Int], b: Vector[Any,Int]) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: bit_xor(a: Vector[Any,Int], b: Int) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: bit_xor(a: Int, b: Vector[Any,Int]) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: lshift(a: Int, b: Int) -> Int
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: lshift(a: Vector[Any,Int], b: Vector[Any,Int]) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: lshift(a: Vector[Any,Int], b: Int) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: lshift(a: Int, b: Vector[Any,Int]) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: rshift(a: Int, b: Int) -> Int
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: rshift(a: Vector[Any,Int], b: Vector[Any,Int]) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: rshift(a: Vector[Any,Int], b: Int) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: rshift(a: Int, b: Vector[Any,Int]) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: invert(a: Int) -> Int
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+
+.. py:function:: invert(a: Vector[Any,Int]) -> Vector[Any,Int]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
 
 
 .. py:function:: mul(a: Scalar, b: Scalar) -> Scalar
