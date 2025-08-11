@@ -21,9 +21,9 @@ import warp as wp
 from warp.tests.unittest_utils import *
 
 
-def test_atomic_bitwise_tile(test, device):
+def test_tile_atomic_bitwise(test, device):
     @wp.kernel
-    def test_atomic_bitwise_tile_kernel(a: wp.array(dtype=wp.uint32), b: wp.array(dtype=wp.uint32), op_type: int):
+    def test_tile_atomic_bitwise_kernel(a: wp.array(dtype=wp.uint32), b: wp.array(dtype=wp.uint32), op_type: int):
         i, j = wp.tid()
         block_dim = wp.block_dim()
         assert block_dim == 32
@@ -57,9 +57,9 @@ def test_atomic_bitwise_tile(test, device):
 
         target_array = wp.array(b, dtype=wp.uint32, device=device)
 
-        wp.launch_tiled(test_atomic_bitwise_tile_kernel, dim=n, inputs=[and_op_array, target_array, 0], block_dim=32)
-        wp.launch_tiled(test_atomic_bitwise_tile_kernel, dim=n, inputs=[or_op_array, target_array, 1], block_dim=32)
-        wp.launch_tiled(test_atomic_bitwise_tile_kernel, dim=n, inputs=[xor_op_array, target_array, 2], block_dim=32)
+        wp.launch_tiled(test_tile_atomic_bitwise_kernel, dim=n, inputs=[and_op_array, target_array, 0], block_dim=32)
+        wp.launch_tiled(test_tile_atomic_bitwise_kernel, dim=n, inputs=[or_op_array, target_array, 1], block_dim=32)
+        wp.launch_tiled(test_tile_atomic_bitwise_kernel, dim=n, inputs=[xor_op_array, target_array, 2], block_dim=32)
 
         assert_np_equal(and_op_array.numpy(), expected_and)
         assert_np_equal(or_op_array.numpy(), expected_or)
@@ -69,12 +69,12 @@ def test_atomic_bitwise_tile(test, device):
 devices = get_test_devices()
 
 
-class TestAtomicBitwiseTile(unittest.TestCase):
+class TestTileAtomicBitwise(unittest.TestCase):
     pass
 
 
 add_function_test(
-    TestAtomicBitwiseTile, "test_atomic_bitwise_tile", test_atomic_bitwise_tile, devices=get_cuda_test_devices()
+    TestTileAtomicBitwise, "test_tile_atomic_bitwise", test_tile_atomic_bitwise, devices=get_cuda_test_devices()
 )
 
 
