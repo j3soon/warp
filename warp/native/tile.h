@@ -2273,8 +2273,8 @@ inline CUDA_CALLABLE void tile_bit_and_inplace(TileA& a, TileB& b)
     using ShapeB = typename TileB::Layout::Shape;
 
     // verify shapes and sizes are compatible
-    static_assert(ShapeA::N == ShapeB::N, "Tile shapes must match for inplace subtraction");
-    static_assert(ShapeA::size() == ShapeB::size(), "Tile sizes must match for inplace subtraction");
+    static_assert(ShapeA::N == ShapeB::N, "Tile shapes must match for inplace bitwise AND");
+    static_assert(ShapeA::size() == ShapeB::size(), "Tile sizes must match for inplace bitwise AND");
 
     // work with register tiles for inplace operations, regardless of the storage type of the input tiles
     auto a_reg = a.copy_to_register();
@@ -2306,8 +2306,8 @@ inline CUDA_CALLABLE void tile_bit_or_inplace(TileA& a, TileB& b)
     using ShapeB = typename TileB::Layout::Shape;
 
     // verify shapes and sizes are compatible
-    static_assert(ShapeA::N == ShapeB::N, "Tile shapes must match for inplace subtraction");
-    static_assert(ShapeA::size() == ShapeB::size(), "Tile sizes must match for inplace subtraction");
+    static_assert(ShapeA::N == ShapeB::N, "Tile shapes must match for inplace bitwise OR");
+    static_assert(ShapeA::size() == ShapeB::size(), "Tile sizes must match for inplace bitwise OR");
 
     // work with register tiles for inplace operations, regardless of the storage type of the input tiles
     auto a_reg = a.copy_to_register();
@@ -2339,8 +2339,8 @@ inline CUDA_CALLABLE void tile_bit_xor_inplace(TileA& a, TileB& b)
     using ShapeB = typename TileB::Layout::Shape;
 
     // verify shapes and sizes are compatible
-    static_assert(ShapeA::N == ShapeB::N, "Tile shapes must match for inplace subtraction");
-    static_assert(ShapeA::size() == ShapeB::size(), "Tile sizes must match for inplace subtraction");
+    static_assert(ShapeA::N == ShapeB::N, "Tile shapes must match for inplace bitwise XOR");
+    static_assert(ShapeA::size() == ShapeB::size(), "Tile sizes must match for inplace bitwise XOR");
 
     // work with register tiles for inplace operations, regardless of the storage type of the input tiles
     auto a_reg = a.copy_to_register();
