@@ -6250,6 +6250,20 @@ Operators
        * Differentiable
 
 
+.. py:function:: bit_and(a: Tile[Any,Tuple[int, ...]], b: Tile[Any,Tuple[int, ...]]) -> Tile[Scalar,Tuple[int, ...]]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+    Bitwise AND each element of two tiles together
+
+
 .. py:function:: bit_or(a: Int, b: Int) -> Int
 
     .. hlist::
@@ -6332,6 +6346,20 @@ Operators
        * Differentiable
 
 
+.. py:function:: bit_or(a: Tile[Any,Tuple[int, ...]], b: Tile[Any,Tuple[int, ...]]) -> Tile[Scalar,Tuple[int, ...]]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+    Bitwise OR each element of two tiles together
+
+
 .. py:function:: bit_xor(a: Int, b: Int) -> Int
 
     .. hlist::
@@ -6412,6 +6440,20 @@ Operators
        * Kernel
        * Python
        * Differentiable
+
+
+.. py:function:: bit_xor(a: Tile[Any,Tuple[int, ...]], b: Tile[Any,Tuple[int, ...]]) -> Tile[Scalar,Tuple[int, ...]]
+    :noindex:
+    :nocontentsentry:
+
+    .. hlist::
+       :columns: 8
+
+       * Kernel
+       * Python
+       * Differentiable
+
+    Bitwise XOR each element of two tiles together
 
 
 .. py:function:: lshift(a: Int, b: Int) -> Int

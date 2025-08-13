@@ -8292,6 +8292,42 @@ add_builtin(
     export=False,
 )
 
+add_builtin(
+    "bit_and",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "b": tile(dtype=Any, shape=Tuple[int, ...])},
+    value_func=tile_binary_map_value_func,
+    # dispatch_func=tile_map_dispatch_func,
+    # variadic=True,
+    native_func="tile_bit_and",
+    doc="Bitwise AND each element of two tiles together",
+    group="Tile Primitives",
+    export=False,
+)
+
+add_builtin(
+    "bit_or",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "b": tile(dtype=Any, shape=Tuple[int, ...])},
+    value_func=tile_binary_map_value_func,
+    # dispatch_func=tile_map_dispatch_func,
+    # variadic=True,
+    native_func="tile_bit_or",
+    doc="Bitwise OR each element of two tiles together",
+    group="Tile Primitives",
+    export=False,
+)
+
+add_builtin(
+    "bit_xor",
+    input_types={"a": tile(dtype=Any, shape=Tuple[int, ...]), "b": tile(dtype=Any, shape=Tuple[int, ...])},
+    value_func=tile_binary_map_value_func,
+    # dispatch_func=tile_map_dispatch_func,
+    # variadic=True,
+    native_func="tile_bit_xor",
+    doc="Bitwise XOR each element of two tiles together",
+    group="Tile Primitives",
+    export=False,
+)
+
 
 add_builtin(
     "mul",

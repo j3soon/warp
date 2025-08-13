@@ -52,6 +52,34 @@ def test_tile_atomic_bitwise_scalar(test, device):
                 s[0] ^= b[word_idx] & s_bit_mask[bit_idx]
         c[word_idx] = s[0]
 
+    @wp.kernel
+    def test_tile_atomic_bitwise_scalar_tilewise_kernel(
+        a: wp.array(dtype=wp.uint32), b: wp.array(dtype=wp.uint32), c: wp.array(dtype=wp.uint32), op_type: int
+    ):
+        batch_idx, _ = wp.tid()
+        block_dim = wp.block_dim()
+        assert block_dim == 32
+        # Each tile is responsible for a batch of 32 elements
+        s1 = wp.tile_load(a, shape=32, offset=batch_idx * 32)
+        s2 = wp.tile_load(b, shape=32, offset=batch_idx * 32)
+        # inter-tile operations (batch-wise)
+        if op_type < 9:
+            if op_type == 6:
+                s1 &= s2
+            elif op_type == 7:
+                s1 |= s2
+            elif op_type == 8:
+                s1 ^= s2
+            wp.tile_store(c, s1, offset=batch_idx * 32)
+        else:
+            if op_type == 9:
+                s3 = s1 & s2
+            elif op_type == 10:
+                s3 = s1 | s2
+            elif op_type == 11:
+                s3 = s1 ^ s2
+            wp.tile_store(c, s3, offset=batch_idx * 32)
+
     n = 1024
     rng = np.random.default_rng(42)
 
@@ -73,25 +101,35 @@ def test_tile_atomic_bitwise_scalar(test, device):
         assert_np_equal(c_wp.numpy(), expected_or)
         wp.launch_tiled(test_tile_atomic_bitwise_scalar_kernel, dim=n, inputs=[a_wp, b_wp, c_wp, 2], block_dim=32)
         assert_np_equal(c_wp.numpy(), expected_xor)
+        wp.launch_tiled(test_tile_atomic_bitwise_scalar_kernel, dim=n, inputs=[a_wp, b_wp, c_wp, 3], block_dim=32)
+        assert_np_equal(c_wp.numpy(), expected_and)
+        wp.launch_tiled(test_tile_atomic_bitwise_scalar_kernel, dim=n, inputs=[a_wp, b_wp, c_wp, 4], block_dim=32)
+        assert_np_equal(c_wp.numpy(), expected_or)
+        wp.launch_tiled(test_tile_atomic_bitwise_scalar_kernel, dim=n, inputs=[a_wp, b_wp, c_wp, 5], block_dim=32)
+        assert_np_equal(c_wp.numpy(), expected_xor)
+
         wp.launch_tiled(
-            test_tile_atomic_bitwise_scalar_kernel,
-            dim=n,
-            inputs=[a_wp, b_wp, c_wp, 3],
-            block_dim=32,
+            test_tile_atomic_bitwise_scalar_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 6], block_dim=32
         )
         assert_np_equal(c_wp.numpy(), expected_and)
         wp.launch_tiled(
-            test_tile_atomic_bitwise_scalar_kernel,
-            dim=n,
-            inputs=[a_wp, b_wp, c_wp, 4],
-            block_dim=32,
+            test_tile_atomic_bitwise_scalar_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 7], block_dim=32
         )
         assert_np_equal(c_wp.numpy(), expected_or)
         wp.launch_tiled(
-            test_tile_atomic_bitwise_scalar_kernel,
-            dim=n,
-            inputs=[a_wp, b_wp, c_wp, 5],
-            block_dim=32,
+            test_tile_atomic_bitwise_scalar_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 8], block_dim=32
+        )
+        assert_np_equal(c_wp.numpy(), expected_xor)
+        wp.launch_tiled(
+            test_tile_atomic_bitwise_scalar_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 9], block_dim=32
+        )
+        assert_np_equal(c_wp.numpy(), expected_and)
+        wp.launch_tiled(
+            test_tile_atomic_bitwise_scalar_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 10], block_dim=32
+        )
+        assert_np_equal(c_wp.numpy(), expected_or)
+        wp.launch_tiled(
+            test_tile_atomic_bitwise_scalar_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 11], block_dim=32
         )
         assert_np_equal(c_wp.numpy(), expected_xor)
 
@@ -127,6 +165,34 @@ def test_tile_atomic_bitwise_vector(test, device):
                 s[0] ^= b[word_idx] & s_bit_mask[bit_idx]
         c[word_idx] = s[0]
 
+    @wp.kernel
+    def test_tile_atomic_bitwise_vector_tilewise_kernel(
+        a: wp.array(dtype=wp.vec3ui), b: wp.array(dtype=wp.vec3ui), c: wp.array(dtype=wp.vec3ui), op_type: int
+    ):
+        batch_idx, _ = wp.tid()
+        block_dim = wp.block_dim()
+        assert block_dim == 32
+        # Each tile is responsible for a batch of 32 elements
+        s1 = wp.tile_load(a, shape=32, offset=batch_idx * 32)
+        s2 = wp.tile_load(b, shape=32, offset=batch_idx * 32)
+        # inter-tile operations (batch-wise)
+        if op_type < 9:
+            if op_type == 6:
+                s1 &= s2
+            elif op_type == 7:
+                s1 |= s2
+            elif op_type == 8:
+                s1 ^= s2
+            wp.tile_store(c, s1, offset=batch_idx * 32)
+        else:
+            if op_type == 9:
+                s3 = s1 & s2
+            elif op_type == 10:
+                s3 = s1 | s2
+            elif op_type == 11:
+                s3 = s1 ^ s2
+            wp.tile_store(c, s3, offset=batch_idx * 32)
+
     n = 1024
     rng = np.random.default_rng(42)
 
@@ -148,25 +214,35 @@ def test_tile_atomic_bitwise_vector(test, device):
         assert_np_equal(c_wp.numpy(), expected_or)
         wp.launch_tiled(test_tile_atomic_bitwise_vector_kernel, dim=n, inputs=[a_wp, b_wp, c_wp, 2], block_dim=32)
         assert_np_equal(c_wp.numpy(), expected_xor)
+        wp.launch_tiled(test_tile_atomic_bitwise_vector_kernel, dim=n, inputs=[a_wp, b_wp, c_wp, 3], block_dim=32)
+        assert_np_equal(c_wp.numpy(), expected_and)
+        wp.launch_tiled(test_tile_atomic_bitwise_vector_kernel, dim=n, inputs=[a_wp, b_wp, c_wp, 4], block_dim=32)
+        assert_np_equal(c_wp.numpy(), expected_or)
+        wp.launch_tiled(test_tile_atomic_bitwise_vector_kernel, dim=n, inputs=[a_wp, b_wp, c_wp, 5], block_dim=32)
+        assert_np_equal(c_wp.numpy(), expected_xor)
+
         wp.launch_tiled(
-            test_tile_atomic_bitwise_vector_kernel,
-            dim=n,
-            inputs=[a_wp, b_wp, c_wp, 3],
-            block_dim=32,
+            test_tile_atomic_bitwise_vector_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 6], block_dim=32
         )
         assert_np_equal(c_wp.numpy(), expected_and)
         wp.launch_tiled(
-            test_tile_atomic_bitwise_vector_kernel,
-            dim=n,
-            inputs=[a_wp, b_wp, c_wp, 4],
-            block_dim=32,
+            test_tile_atomic_bitwise_vector_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 7], block_dim=32
         )
         assert_np_equal(c_wp.numpy(), expected_or)
         wp.launch_tiled(
-            test_tile_atomic_bitwise_vector_kernel,
-            dim=n,
-            inputs=[a_wp, b_wp, c_wp, 5],
-            block_dim=32,
+            test_tile_atomic_bitwise_vector_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 8], block_dim=32
+        )
+        assert_np_equal(c_wp.numpy(), expected_xor)
+        wp.launch_tiled(
+            test_tile_atomic_bitwise_vector_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 9], block_dim=32
+        )
+        assert_np_equal(c_wp.numpy(), expected_and)
+        wp.launch_tiled(
+            test_tile_atomic_bitwise_vector_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 10], block_dim=32
+        )
+        assert_np_equal(c_wp.numpy(), expected_or)
+        wp.launch_tiled(
+            test_tile_atomic_bitwise_vector_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 11], block_dim=32
         )
         assert_np_equal(c_wp.numpy(), expected_xor)
 
@@ -205,6 +281,34 @@ def test_tile_atomic_bitwise_matrix(test, device):
                 s[0] ^= b[word_idx] & s_bit_mask[bit_idx]
         c[word_idx] = s[0]
 
+    @wp.kernel
+    def test_tile_atomic_bitwise_matrix_tilewise_kernel(
+        a: wp.array(dtype=mat33ui), b: wp.array(dtype=mat33ui), c: wp.array(dtype=mat33ui), op_type: int
+    ):
+        batch_idx, _ = wp.tid()
+        block_dim = wp.block_dim()
+        assert block_dim == 32
+        # Each tile is responsible for a batch of 32 elements
+        s1 = wp.tile_load(a, shape=32, offset=batch_idx * 32)
+        s2 = wp.tile_load(b, shape=32, offset=batch_idx * 32)
+        # inter-tile operations (batch-wise)
+        if op_type < 9:
+            if op_type == 6:
+                s1 &= s2
+            elif op_type == 7:
+                s1 |= s2
+            elif op_type == 8:
+                s1 ^= s2
+            wp.tile_store(c, s1, offset=batch_idx * 32)
+        else:
+            if op_type == 9:
+                s3 = s1 & s2
+            elif op_type == 10:
+                s3 = s1 | s2
+            elif op_type == 11:
+                s3 = s1 ^ s2
+            wp.tile_store(c, s3, offset=batch_idx * 32)
+
     n = 1024
     rng = np.random.default_rng(42)
 
@@ -226,25 +330,35 @@ def test_tile_atomic_bitwise_matrix(test, device):
         assert_np_equal(c_wp.numpy(), expected_or)
         wp.launch_tiled(test_tile_atomic_bitwise_matrix_kernel, dim=n, inputs=[a_wp, b_wp, c_wp, 2], block_dim=32)
         assert_np_equal(c_wp.numpy(), expected_xor)
+        wp.launch_tiled(test_tile_atomic_bitwise_matrix_kernel, dim=n, inputs=[a_wp, b_wp, c_wp, 3], block_dim=32)
+        assert_np_equal(c_wp.numpy(), expected_and)
+        wp.launch_tiled(test_tile_atomic_bitwise_matrix_kernel, dim=n, inputs=[a_wp, b_wp, c_wp, 4], block_dim=32)
+        assert_np_equal(c_wp.numpy(), expected_or)
+        wp.launch_tiled(test_tile_atomic_bitwise_matrix_kernel, dim=n, inputs=[a_wp, b_wp, c_wp, 5], block_dim=32)
+        assert_np_equal(c_wp.numpy(), expected_xor)
+
         wp.launch_tiled(
-            test_tile_atomic_bitwise_matrix_kernel,
-            dim=n,
-            inputs=[a_wp, b_wp, c_wp, 3],
-            block_dim=32,
+            test_tile_atomic_bitwise_matrix_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 6], block_dim=32
         )
         assert_np_equal(c_wp.numpy(), expected_and)
         wp.launch_tiled(
-            test_tile_atomic_bitwise_matrix_kernel,
-            dim=n,
-            inputs=[a_wp, b_wp, c_wp, 4],
-            block_dim=32,
+            test_tile_atomic_bitwise_matrix_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 7], block_dim=32
         )
         assert_np_equal(c_wp.numpy(), expected_or)
         wp.launch_tiled(
-            test_tile_atomic_bitwise_matrix_kernel,
-            dim=n,
-            inputs=[a_wp, b_wp, c_wp, 5],
-            block_dim=32,
+            test_tile_atomic_bitwise_matrix_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 8], block_dim=32
+        )
+        assert_np_equal(c_wp.numpy(), expected_xor)
+        wp.launch_tiled(
+            test_tile_atomic_bitwise_matrix_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 9], block_dim=32
+        )
+        assert_np_equal(c_wp.numpy(), expected_and)
+        wp.launch_tiled(
+            test_tile_atomic_bitwise_matrix_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 10], block_dim=32
+        )
+        assert_np_equal(c_wp.numpy(), expected_or)
+        wp.launch_tiled(
+            test_tile_atomic_bitwise_matrix_tilewise_kernel, dim=n // 32, inputs=[a_wp, b_wp, c_wp, 11], block_dim=32
         )
         assert_np_equal(c_wp.numpy(), expected_xor)
 

@@ -3188,6 +3188,11 @@ def bit_and(a: Int, b: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
     ...
 
 @over
+def bit_and(a: Tile[Any, Tuple[int, ...]], b: Tile[Any, Tuple[int, ...]]) -> Tile[Scalar, Tuple[int, ...]]:
+    """Bitwise AND each element of two tiles together"""
+    ...
+
+@over
 def bit_or(a: Int, b: Int) -> Int:
     """ """
     ...
@@ -3223,6 +3228,11 @@ def bit_or(a: Int, b: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
     ...
 
 @over
+def bit_or(a: Tile[Any, Tuple[int, ...]], b: Tile[Any, Tuple[int, ...]]) -> Tile[Scalar, Tuple[int, ...]]:
+    """Bitwise OR each element of two tiles together"""
+    ...
+
+@over
 def bit_xor(a: Int, b: Int) -> Int:
     """ """
     ...
@@ -3255,6 +3265,11 @@ def bit_xor(a: Matrix[Any, Any, Int], b: Int) -> Matrix[Any, Any, Int]:
 @over
 def bit_xor(a: Int, b: Matrix[Any, Any, Int]) -> Matrix[Any, Any, Int]:
     """ """
+    ...
+
+@over
+def bit_xor(a: Tile[Any, Tuple[int, ...]], b: Tile[Any, Tuple[int, ...]]) -> Tile[Scalar, Tuple[int, ...]]:
+    """Bitwise XOR each element of two tiles together"""
     ...
 
 @over
